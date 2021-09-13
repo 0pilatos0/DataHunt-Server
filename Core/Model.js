@@ -1,54 +1,54 @@
 const MySQL = require("./MySQL")
 
 module.exports = class Model{
-    #table
-    constructor(table) {
-        this.#table = table
+    static table
+    constructor() {
+        
     }
 
-    async Select({select, where, limit, joins} = {}){
+    static async Select({select, where, limit, joins} = {}){
         let values = []
         if(where){
-            let whereData = this.#ParseWhereObject(where)
+            let whereData = this.ParseWhereObject(where)
             where = whereData.where
             values = values.concat(whereData.values)
         }
-        return MySQL.Query(`SELECT ${select || '*'} FROM ${this.#table} ${joins ? joins.join(' ') : ''}${where ? ` WHERE ${where}` : ''}${limit ? ` LIMIT ${limit}` : ''}`, values)
+        return MySQL.Query(`SELECT ${select || '*'} FROM ${this.table} ${joins ? joins.join(' ') : ''}${where ? ` WHERE ${where}` : ''}${limit ? ` LIMIT ${limit}` : ''}`, values)
     }
 
-    async Delete({where}){
+    static async Delete({where}){
         let values = []
         if(where){
-            let whereData = this.#ParseWhereObject(where)
+            let whereData = this.ParseWhereObject(where)
             where = whereData.where
             values = values.concat(whereData.values)
         }
-        return MySQL.Query(`DELETE FROM ${this.#table}${where ? ` WHERE ${where}` : ''}`, values)
+        return MySQL.Query(`DELETE FROM ${this.table}${where ? ` WHERE ${where}` : ''}`, values)
     }
 
-    async Update({set, where}){
+    static async Update({set, where}){
         let values = []
-        let setData = this.#ParseSetObject(set)
+        let setData = this.ParseSetObject(set)
         set = setData.set
         values = values.concat(setData.values)
-        let whereData = this.#ParseWhereObject(where)
+        let whereData = this.ParseWhereObject(where)
         where = whereData.where
         values = values.concat(whereData.values)
-        return MySQL.Query(`UPDATE ${this.#table} SET ${set}${where ? ` WHERE ${where}` : ''}`, values)
+        return MySQL.Query(`UPDATE ${this.table} SET ${set}${where ? ` WHERE ${where}` : ''}`, values)
     }
 
-    async Create({create}){
+    static async Create({create}){
         let values = []
-        let createData = this.#ParseCreateObject(create)
+        let createData = this.ParseCreateObject(create)
         values = values.concat(createData.values)
-        return MySQL.Query(`INSERT INTO ${this.#table} ${createData.create}`, values)
+        return MySQL.Query(`INSERT INTO ${this.table} ${createData.create}`, values)
     }
 
-    async All(){
+    static async All(){
         return await this.Select()
     }
 
-    async First({where}){
+    static async First({where}){
         let first = await this.Select({
             limit: 1,
             where
@@ -57,7 +57,7 @@ module.exports = class Model{
         else return false
     }
 
-    async Last({where}){
+    static async Last({where}){
         let last = await this.Select({
             limit: 1,
             where
@@ -66,7 +66,7 @@ module.exports = class Model{
         else return false
     }
 
-    async Find({where, joins, select}){
+    static async Find({where, joins, select}){
         let data = await this.Select({
             where, 
             joins,
@@ -76,17 +76,17 @@ module.exports = class Model{
         else return false
     }
 
-    async FindId({where, joins}){
+    static async FindId({where, joins}){
         let data = await this.Select({
             where,
             joins,
-            select: [`${this.#table}.id`]
+            select: [`${this.table}.id`]
         })
         if(data.length > 0) return data[0].id
         else return false
     }
 
-    #ParseWhereObject(where){
+    static ParseWhereObject(where){
         let tWhere = []
         let values = []
         Object.entries(where).forEach(entry => {
@@ -97,7 +97,7 @@ module.exports = class Model{
         return {where: tWhere, values}
     }
 
-    #ParseSetObject(set){
+    static ParseSetObject(set){
         let tSet = []
         let values = []
         Object.entries(set).forEach(entry => {
@@ -108,7 +108,7 @@ module.exports = class Model{
         return {set: tSet, values}
     }
 
-    #ParseCreateObject(create){
+    static ParseCreateObject(create){
         let values = []
         let tCreate = []
         let tValues = []

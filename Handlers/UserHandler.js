@@ -1,3 +1,6 @@
+const { Salter } = require("../Core/Salter")
+const User = require("../Models/User")
+
 module.exports = function HandleUser(socket){
     socket.on('login', async (data) => {
         console.log(data)
@@ -79,6 +82,18 @@ module.exports = function HandleUser(socket){
         }
         else{
             errors.push('Confirmation password must be filled in')
+        }
+        if(errors.length == 0){
+            let createdUser = await User.Create({
+                create:{
+                    name: data.name,
+                    username: data.username,
+                    email: data.email,
+                    password: Salter.HashPassword(data.password),
+                    verifyToken: Salter.GenerateRandomToken()
+                }
+            })
+            console.log(createdUser)
         }
         socket.emit('register')
     })

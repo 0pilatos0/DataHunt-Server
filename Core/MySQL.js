@@ -1,11 +1,12 @@
-const mysql = require('mysql') 
+const mysql = require('mysql')
+require('dotenv').config()
 
 module.exports =  class MySQL{
     static #con = mysql.createConnection({
-        host: "localhost",
-        user: "root",
-        password: "",
-        database: "datahunt"
+        host: process.env.DBHOST,
+        user: process.env.DBUSER,
+        password: process.env.DBPASS,
+        database: process.env.DB
     })
 
     constructor() {
