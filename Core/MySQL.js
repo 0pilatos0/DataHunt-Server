@@ -1,7 +1,7 @@
 const mysql = require('mysql')
 require('dotenv').config()
 
-module.exports =  class MySQL{
+module.exports = class MySQL{
     static #con = mysql.createConnection({
         host: process.env.DBHOST,
         user: process.env.DBUSER,
