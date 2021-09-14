@@ -1,6 +1,5 @@
 const http = require('http')
 const io = require('socket.io')
-const Pizza = require('../Models/pizza')
 const MySQL = require('./MySQL')
 const HandleUser = require('../Handlers/UserHandler')
 
