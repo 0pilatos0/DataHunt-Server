@@ -7,6 +7,7 @@ module.exports = function HandleUser(socket){
     socket.on('login', async (data) => {
         //console.log(data)
         let errors = []
+        let success = []
         if(!data.email){
             errors.push('Email must be filled in')
         }
@@ -16,23 +17,33 @@ module.exports = function HandleUser(socket){
         let user = await User.Find({
             email: data.email
         })
-        if(!user.verified){
-            errors.push("You must verify your account before being able to login")
-        }
-        if(!user.enabled){
-            errors.push("Your account is disabled because you are banned")
-        }
-        if(errors.length == 0){
-            if(!Salter.VerifyPassword(data.password, user.password)){
-                errors.push("Your username or password is incorrect")
+        if(user !== false){
+            if(!user.verified){
+                errors.push("You must verify your account before being able to login")
+            }
+            if(!user.enabled){
+                errors.push("Your account is disabled because you are banned")
+            }
+            if(errors.length == 0){
+                if(!Salter.VerifyPassword(data.password, user.password)){
+                    errors.push("Your username or password is incorrect")
+                }
+                success.push("You successfully logged in")
             }
         }
-        socket.emit('login')
+        else{
+            errors.push("Your username or password is incorrect")
+        }
+        socket.emit('login', {
+            errors,
+            success
+        })
     })
 
     socket.on('register', async (data) => {
         //console.log(data)
         let errors = []
+        let success = []
         if(data.name != null){
             const nameRegex = /^[a-z ,.'-]+$/i
             if(!nameRegex.test(data.name)){
@@ -71,7 +82,7 @@ module.exports = function HandleUser(socket){
         }
         if(data.confirmPassword != null){
             const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-            if(!passwordRegex.test(data.confirmPassword) && data.password.match(data.confirmPassword)){
+            if(!passwordRegex.test(data.confirmPassword) && data.password != data.confirmPassword){
                 errors.push('Passwords doesn\'t match eachother')
             }
         }
@@ -96,19 +107,23 @@ module.exports = function HandleUser(socket){
                 })
                 //console.log(createdUser)
                 let htmlData = HTMLLoader.Read("./Mail/activationMail.html")
-                htmlData = htmlData.replace('{{url}}', verifyToken)
+                htmlData = htmlData.replace('{{url}}', `http://${process.env.WEBSITEHOST}:${process.env.WEBSITEPORT}/verify?verifytoken=${verifyToken}`)
                 htmlData = htmlData.replace('{{username}}', data.username)
                 let mailState = await Mailer.SendMail({
                     to: data.email,
                     subject: 'DataHunt user registration',
                     html: htmlData
-                })   
+                })
+                success.push("You now received an email with a verification link to verify your account")
             }
             else{
-                errors.push("Account with that username already exists")
+                errors.push("Account with that email or username already exists")
             }
         }
-        socket.emit('register')
+        socket.emit('register', {
+            errors,
+            success
+        })
     })
 
     socket.on('logout', (data) => {
