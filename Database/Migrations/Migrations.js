@@ -5,8 +5,13 @@ module.exports = class Class_Seeder {
     }
 
     static async Run() {
-        await Class_Migrations.Run()
-
+        Class_Migrations.Run(
+            {
+                tableName: 'testTable',
+                defaults: ['name'],
+                values: {'username': ["varchar(255)", "NOT null"], 'description': ["varchar(255)", "NOT NULL"]}
+            }
+        )
         console.log("\r\n Finished migrations")
     }
 }
