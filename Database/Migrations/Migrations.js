@@ -1,6 +1,6 @@
 const Migration = require('../../core/Migration');
 
-module.exports = class Class_Seeder {
+module.exports = class Migrations {
     constructor() {
     }
 
@@ -11,7 +11,7 @@ module.exports = class Class_Seeder {
             {
                 tableName: 'users',
                 defaults: ['name', 'username'],
-                values: {'email': ["varchar(255)", "NN"], 'password': ["varchar(255)", "NN"], 'enabled': ["BOOLEAN", "NN"], "resetpassword": ["varchar(255)"], "verifytoken": ["varchar(255)"], "verified": ["BOOLEAN"], "resettoken": ["varchar(255)"]}
+                values: {'email': ["varchar(255)", "NN"], 'password': ["varchar(255)", "NN"], 'enabled': ["BOOLEAN", "NN"], "resetpassword": ["varchar(255)"], "verifytoken": ["varchar(255)"], "verified": ["BOOLEAN", "DEFAULT 0"], "resettoken": ["varchar(255)"]}
             }
         )
 

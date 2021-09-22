@@ -1,5 +1,5 @@
 const Server = require('./Core/Server')
-const Class_Seeder = require('./Database/Seeders/Class_Seeder')
+const Seeders = require('./Database/Seeders/Seeders')
 const Migrations = require('./Database/Migrations/Migrations')
 
 // new Server()
@@ -10,6 +10,7 @@ async function test() {
     // let data = await Class_Seeder.TestFuntion()
     // console.log(data)
 
-    Migrations.Run()
+    // Migrations.Run()
+    Seeders.Run()
 }
 test();
