@@ -4,7 +4,15 @@ module.exports = class Migration{
         
     }
 
-    static async Test({tableName, defaults, values}){
+    static async CreateTable({tableName, defaults, values}){
+        let checked = await this.CheckTable(tableName)
+        if (checked.length !== 0) {
+            console.log(`Dropping table ${tableName}`)
+
+            await this.DropTable(tableName)
+        }
+        console.log(`Creating table ${tableName}`)
+
         let attr = {}
         defaults.forEach(e => {
             switch (e) {
@@ -13,7 +21,11 @@ module.exports = class Migration{
                 break;
 
                 case "description":
-                    console.log("description column made :)")
+                    attr['description'] = ["longtext", "NOT null"]
+                break;
+
+                case "username":
+                    attr['username'] = ["varchar(255)", "NOT null"]
                 break;
 
                 default:
@@ -35,12 +47,16 @@ module.exports = class Migration{
                 switch (e[1][index]) {
                     case "PK":
                         e[1][index] = "PRIMARY KEY"
-                    break;
+                        break;
 
                     case "AI":
                         e[1][index] = "AUTO_INCREMENT"
-                    break;
+                        break;
                 
+                    case "NN":
+                        e[1][index] = "NOT NULL"
+                        break;
+                        
                     default:
                         break;
                 }
@@ -55,8 +71,39 @@ module.exports = class Migration{
         query += ");"
 
         let result = MySQL.Query(query)
-        // console.log(query)
+
+        console.log(`Made table ${tableName} \r\n`)
+
         return result
+    }
+
+    static async DropTable(tableName) {
+        return await MySQL.Query(`DROP TABLE ${tableName}`)
+    }
+
+    static async CheckTable(tableName) {
+        return await MySQL.Query(`SELECT * FROM information_schema.tables WHERE table_schema = '${process.env.DB}' AND table_name = '${tableName}' LIMIT 1;`)
+    }
+
+    static async CreateDatabase(databaseName){
+        let checked = await this.CheckDatabase(databaseName)
+        if (checked.length !== 0) {
+            console.log(`Dropping database ${databaseName}`)
+            await this.DropDatabase(databaseName)
+        }
+        await MySQL.Query(`CREATE DATABASE ${databaseName}`)
+        let query = MySQL.Query(`USE ${databaseName}`)
         
+        console.log(`Made database ${databaseName} \r\n`)
+
+        return query
+    }
+
+    static async CheckDatabase(databaseName){
+        return await MySQL.Query(`SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '${databaseName}'`)
+    }
+
+    static async DropDatabase(databaseName){
+        return await MySQL.Query(`DROP DATABASE ${databaseName}`)
     }
 }
