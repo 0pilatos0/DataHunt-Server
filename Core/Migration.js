@@ -1,3 +1,4 @@
+const MigrationLogger = require("../Database/Migrations/MigrationLogger")
 const MySQL = require("./MySQL")
 module.exports = class Migration{
     constructor() {
@@ -7,11 +8,13 @@ module.exports = class Migration{
     static async CreateTable({tableName, defaults, values}){
         let checked = await this.CheckTable(tableName)
         if (checked.length !== 0) {
-            console.log(`Dropping table ${tableName}`)
+            MigrationLogger.Log(`Dropping table ${tableName}`)
 
             await this.DropTable(tableName)
+
+            MigrationLogger.Log(`Succesfully dropped table ${tableName}`)
         }
-        console.log(`Creating table ${tableName}`)
+        MigrationLogger.Log(`Creating table ${tableName}`)
 
         let attr = {}
         defaults.forEach(e => {
@@ -72,7 +75,7 @@ module.exports = class Migration{
 
         let result = MySQL.Query(query)
 
-        console.log(`Made table ${tableName} \r\n`)
+        MigrationLogger.Log(`Successfully created table ${tableName}`)
 
         return result
     }
@@ -88,13 +91,13 @@ module.exports = class Migration{
     static async CreateDatabase(databaseName){
         let checked = await this.CheckDatabase(databaseName)
         if (checked.length !== 0) {
-            console.log(`Dropping database ${databaseName}`)
+            MigrationLogger.Log(`Dropping database ${databaseName}`)
             await this.DropDatabase(databaseName)
+            MigrationLogger.Log(`Successfully dropped database ${databaseName}`)
         }
         await MySQL.Query(`CREATE DATABASE ${databaseName}`)
+        MigrationLogger.Log(`Successfully created database ${databaseName}`)
         let query = MySQL.Query(`USE ${databaseName}`)
-        
-        console.log(`Made database ${databaseName} \r\n`)
 
         return query
     }
