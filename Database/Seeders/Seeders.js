@@ -1,29 +1,77 @@
-const Model = require('../../Core/Model');
 const MySQL = require('../../Core/MySQL');
 const Seeder = require('../../Core/Seeder');
+const SeederLogger = require('./SeederLogger')
 
-module.exports = class Seeders extends Model{
-    static table = "class";
+module.exports = class Seeders{
     constructor() {
-        super();
+        
     }
 
     static async Run() {
+        SeederLogger.Start(`Started seeding ${process.env.DB}`)
+
         await MySQL.Query("USE datahunttest")
-        Seeder.Seed({
+
+        await Seeder.Seed({
+            tableName: 'users'
+        })
+
+        await Seeder.Seed({
+            tableName: 'users_bans'
+        })
+        
+        await Seeder.Seed({
+            tableName: 'users_feed'
+        })
+        
+        await Seeder.Seed({
+            tableName: 'users_achievements'
+        })
+        
+        await Seeder.Seed({
+            tableName: 'stats'
+        })
+        
+        await Seeder.Seed({
+            tableName: 'roles'
+        })
+        
+        await Seeder.Seed({
+            tableName: 'logintokens'
+        })
+        
+        await Seeder.Seed({
+            tableName: 'level'
+        })
+        
+        await Seeder.Seed({
+            tableName: 'items_stats'
+        })
+        
+        await Seeder.Seed({
+            tableName: 'items'
+        })
+        
+        await Seeder.Seed({
+            tableName: 'friends'
+        })
+        
+        await Seeder.Seed({
             tableName: 'inventory'
         })
-        //return this.All()
-    }
-
-    static async SeedClass(name, type, skill_limit, skill) {
-        return this.Create({
-            create: {
-                name,
-                type,
-                skill_limit,
-                skill
-            }
+        
+        await Seeder.Seed({
+            tableName: 'class'
         })
+        
+        await Seeder.Seed({
+            tableName: 'characters'
+        })
+        
+        await Seeder.Seed({
+            tableName: 'achievements'
+        })
+
+        SeederLogger.Log(`Finished seeding ${process.env.DB}`)
     }
 }

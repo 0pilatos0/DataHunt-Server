@@ -10,7 +10,7 @@ async function test() {
     // let data = await Class_Seeder.TestFuntion()
     // console.log(data)
 
-    // Migrations.Run()
-    Seeders.Run()
+    await Migrations.Run()
+    await Seeders.Run()
 }
 test();

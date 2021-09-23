@@ -1,0 +1,32 @@
+23/09/2021, 10:20:04: Started seeding datahunttest 
+23/09/2021, 10:20:04: Started seeding users 
+23/09/2021, 10:20:04: Successfully seeded users with 1 rows 
+23/09/2021, 10:20:04: Started seeding users_bans 
+23/09/2021, 10:20:04: Successfully seeded users_bans with 1 rows 
+23/09/2021, 10:20:04: Started seeding users_feed 
+23/09/2021, 10:20:04: Successfully seeded users_feed with 1 rows 
+23/09/2021, 10:20:04: Started seeding users_achievements 
+23/09/2021, 10:20:04: Successfully seeded users_achievements with 1 rows 
+23/09/2021, 10:20:04: Started seeding stats 
+23/09/2021, 10:20:04: Successfully seeded stats with 1 rows 
+23/09/2021, 10:20:04: Started seeding roles 
+23/09/2021, 10:20:04: Successfully seeded roles with 1 rows 
+23/09/2021, 10:20:04: Started seeding logintokens 
+23/09/2021, 10:20:04: Successfully seeded logintokens with 1 rows 
+23/09/2021, 10:20:04: Started seeding level 
+23/09/2021, 10:20:04: Successfully seeded level with 1 rows 
+23/09/2021, 10:20:04: Started seeding items_stats 
+23/09/2021, 10:20:04: Successfully seeded items_stats with 1 rows 
+23/09/2021, 10:20:04: Started seeding items 
+23/09/2021, 10:20:04: Successfully seeded items with 1 rows 
+23/09/2021, 10:20:04: Started seeding friends 
+23/09/2021, 10:20:04: Successfully seeded friends with 1 rows 
+23/09/2021, 10:20:04: Started seeding inventory 
+23/09/2021, 10:20:04: Successfully seeded inventory with 1 rows 
+23/09/2021, 10:20:04: Started seeding class 
+23/09/2021, 10:20:04: Successfully seeded class with 1 rows 
+23/09/2021, 10:20:04: Started seeding characters 
+23/09/2021, 10:20:04: Successfully seeded characters with 1 rows 
+23/09/2021, 10:20:04: Started seeding achievements 
+23/09/2021, 10:20:04: Successfully seeded achievements with 1 rows 
+23/09/2021, 10:20:04: Finished seeding datahunttest 

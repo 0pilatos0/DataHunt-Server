@@ -1,17 +1,20 @@
 const Migration = require('../../core/Migration');
+const MigrationLogger = require('./MigrationLogger');
 
 module.exports = class Migrations {
     constructor() {
     }
 
     static async Run() {
+        MigrationLogger.Start(`Started migrating ${process.env.DB}`)
+
         await Migration.CreateDatabase(process.env.DB)
 
         await Migration.CreateTable(
             {
                 tableName: 'users',
                 defaults: ['name', 'username'],
-                values: {'email': ["varchar(255)", "NN"], 'password': ["varchar(255)", "NN"], 'enabled': ["BOOLEAN", "NN"], "resetpassword": ["varchar(255)"], "verifytoken": ["varchar(255)"], "verified": ["BOOLEAN", "DEFAULT 0"], "resettoken": ["varchar(255)"]}
+                values: {'email': ["varchar(255)", "NN"], 'password': ["varchar(255)", "NN"], 'enabled': ["BOOLEAN", "NN", "DEFAULT 1"], "resetpassword": ["varchar(255)"], "verifytoken": ["varchar(255)"], "verified": ["BOOLEAN", "DEFAULT 0"], "resettoken": ["varchar(255)"]}
             }
         )
 
@@ -27,7 +30,7 @@ module.exports = class Migrations {
             {
                 tableName: 'users_feed',
                 defaults: [],
-                values: {'user_id': ["INT", "NN"], 'message': ["TEXT", "NN"], 'time': ['TIMESTAMP', 'NN']}
+                values: {'user_id': ["INT", "NN"], 'message': ["LONGTEXT", "NN"], 'time': ['TIMESTAMP', 'NN']}
             }
         )
 
@@ -127,6 +130,6 @@ module.exports = class Migrations {
             }
         )
 
-        console.log("\r\n Finished migrations")
+        MigrationLogger.Log(`Finished migrating ${process.env.DB}`)
     }
 }
