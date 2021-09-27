@@ -2,7 +2,7 @@ const Server = require('./Core/Server')
 const Seeders = require('./Database/Seeders/Seeders')
 const Migrations = require('./Database/Migrations/Migrations')
 
-// new Server()
+new Server()
 
 async function test() {
     //console.log(await Class_Seeder.SeedClass('wizard', 'magic', 4, 'Fire Bolt'))

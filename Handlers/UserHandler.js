@@ -15,7 +15,9 @@ module.exports = function HandleUser(socket){
             errors.push('Password must be filled in')
         }
         let user = await User.Find({
-            email: data.email
+            where:{
+                email: data.email
+            }
         })
         if(user !== false){
             if(!user.verified){
@@ -92,8 +94,10 @@ module.exports = function HandleUser(socket){
         if(errors.length == 0){
             let verifyToken = Salter.GenerateRandomToken()
             let existingUser = await User.FindId({
-                username: data.username,
-                email: data.email
+                where: {
+                    username: data.username,
+                    email: data.email
+                }
             })
             if(existingUser == false){
                 let createdUser = await User.Create({
