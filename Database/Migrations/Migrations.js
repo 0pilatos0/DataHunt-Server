@@ -38,7 +38,15 @@ module.exports = class Migrations {
             {
                 tableName: 'users_achievements',
                 defaults: [],
-                values: {'user_id': ["INT", "NN"], 'achievement_id': ["INT", "NN"], 'progress_value': ['INT', 'NN'], 'required_value': ['INT', 'NN'], 'complrseted': ['BOOLEAN', 'NN']}
+                values: {'user_id': ["INT", "NN"], 'achievement_id': ["INT", "NN"], 'progress_value': ['INT', 'NN'], 'required_value': ['INT', 'NN']}
+            }
+        )
+
+        await Migration.CreateTable(
+            {
+                tableName: 'characters_achievements',
+                defaults: [],
+                values: {'character_id': ["INT", "NN"], 'achievement_id': ["INT", "NN"], 'progress_value': ['INT', 'NN'], 'required_value': ['INT', 'NN']}
             }
         )
 
@@ -126,7 +134,7 @@ module.exports = class Migrations {
             {
                 tableName: 'items_stats',
                 defaults: [],
-                values: {'required_level': ["INT", "NN"], 'min_health': ["INT", "NN"], 'max_health': ["INT", "NN"], 'min_attack': ["INT", "NN"], 'max_attack': ["INT", "NN"], 'min_speed': ["INT", "NN"], 'max_speed': ["INT", "NN"]}
+                values: {'required_level': ["INT", "NN"], 'min_value': ["INT", "NN"], 'max_value': ["INT", "NN"]}
             }
         )
 
