@@ -2,6 +2,7 @@ const http = require('http')
 const io = require('socket.io')
 const MySQL = require('./MySQL')
 const HandleUser = require('../Handlers/UserHandler')
+const HandleItem = require('../Handlers/ItemHandler')
 
 module.exports = class Server{
     #http = http.createServer()
@@ -24,7 +25,8 @@ module.exports = class Server{
             console.log(`+${socket.id}`)
 
             HandleUser(socket)
-            
+            HandleItem(socket)
+
             socket.on('disconnect', () => {
                 console.log(`-${socket.id}`)
             })

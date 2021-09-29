@@ -51,14 +51,8 @@ module.exports = class Seeder{
                     else if(column.Type.includes("int")){
                         //Generate random int between 1 and maxLength
                         let int = ""
-                        if(column.Type.match(digitRegex)){
-                            let maxLength = column.Type.match(digitRegex)[0]
-                            for (let i = 0; i < maxLength; i++) {
-                                int += Math.round(Math.random() * 9)
-                            }
-                        }
-                        else{
-                            int = Math.round(Math.random() * 9)
+                        for (let i = 0; i < 4; i++) {
+                            int += Math.round(Math.random() * 9)
                         }
                         parsedColumns.push({
                             field: column.Field,
@@ -101,7 +95,6 @@ module.exports = class Seeder{
                 insertNames.push(column.field)
                 insertValues.push(`'${column.value}'`)
             })
-            
             await MySQL.Query(`INSERT INTO ${tableName} (${insertNames.join(', ')}) VALUES (${insertValues.join(', ')})`)
         }
         SeederLogger.Log(`Successfully seeded ${tableName} with ${amount} rows`)

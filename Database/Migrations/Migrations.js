@@ -125,7 +125,7 @@ module.exports = class Migrations {
         await Migration.CreateTable(
             {
                 tableName: 'items',
-                defaults: [],
+                defaults: ['name'],
                 values: {'items_stats_id': ["INT", "NN"], 'type': ["INT", "NN"], 'rarity': ["INT", "NN"], 'stats_range': ["INT", "NN"], 'texture': ["INT", "NN"]}
             }
         )
