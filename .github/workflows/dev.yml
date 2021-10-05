@@ -16,6 +16,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
+          path: ''
           token: ${{ secrets.PAT }}
-      - run: echo -en "$ENV_FILE" > .env
-      - run: npm i
+      - run: |
+          echo -en "$ENV_FILE" > .env
+          npm i
