@@ -1,7 +1,7 @@
 name: Server
 env:
   ENV_FILE: |-
-    ${{ secrets.SERVER_ENV }}
+    ${{ secrets.ENV }}
 on:
   push:
     branches: [ master ]
