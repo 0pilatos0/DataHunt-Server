@@ -136,6 +136,7 @@ module.exports = function HandleUser(socket){
 
     socket.on('forgotPass', async (data) => {
         let errors = []
+        let success = []
         if(data.email != null){
             const emailRegex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
             if(!emailRegex.test(data.email)){
@@ -147,24 +148,41 @@ module.exports = function HandleUser(socket){
                 email: data.email
             }
         })
-        if(existingUser == false){
-            errors.push("Account with that email does not exist")
-        } else if(existingUser == true){
+        console.log(existingUser)
+        if(existingUser){
             let verified = await User.FindId({
                 where: {
                     email: data.email,
                     verified: 1
                 }
             })
-            if(verified == false){
-                errors.push("Account with that email is not verified")
-            } else if(verified == true){
-                //TODO send mail with reset link    
+            console.log(verified)
+            if(verified){
+                
+                console.log("TODO send mail with reset link")
+                let token = Salter.GenerateRandomToken()  
+                let updatedUser = await User.Update({
+                    where: {
+                        email: data.email
+                    },
+                    set: {
+                        resettoken: token
+                    }
+                })
+
+                //TODO send mail with reset link  + token
+
+                success.push("You now received an email with a reset link")
+            } else{
+                errors.push("Account is not verified")
             }
+        } else{
+            errors.push("Account with that email does not exist")
         }
-        console.log(data)
+        console.log(errors)
         socket.emit('forgotPass', {
-            errors
+            errors,
+            success
         })
 
     })
