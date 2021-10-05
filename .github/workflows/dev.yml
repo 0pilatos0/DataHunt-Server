@@ -18,6 +18,5 @@ jobs:
         with:
           path: ''
           token: ${{ secrets.PAT }}
-      - run: |
-          echo -en "$ENV_FILE" > .env
-          npm i
+      - run: echo -en "$ENV_FILE" > .env
+      - run: npm i
