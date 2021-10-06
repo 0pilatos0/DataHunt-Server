@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 
-module.exports.Salter = class {
+module.exports = class Salter {
     constructor(){
 
     }
