@@ -111,7 +111,7 @@ module.exports = function HandleUser(socket){
                 })
                 //console.log(createdUser)
                 let htmlData = HTMLLoader.Read("./Mail/activationMail.html")
-                htmlData = htmlData.replace('{{url}}', `http://${process.env.WEBSITEHOST}:${process.env.WEBSITEPORT}/verify?verifytoken=${verifyToken}`)
+                htmlData = htmlData.replace('{{url}}', `http://${process.env.WEBSITEHOST}:${process.env.WEBSITEPORT}/verify?token=${verifyToken}`)
                 htmlData = htmlData.replace('{{username}}', data.username)
                 let mailState = await Mailer.SendMail({
                     to: data.email,
@@ -149,14 +149,14 @@ module.exports = function HandleUser(socket){
         })
         console.log(existingUser)
         if(existingUser){
-            let verified = await User.FindId({
+            let verified = await User.Find({
                 where: {
                     email: data.email,
                     verified: 1
                 }
             })
             console.log(verified)
-            if(verified){
+            if(verified != false){
                 
                 console.log("TODO send mail with reset link")
                 let token = Salter.GenerateRandomToken()  
@@ -167,6 +167,15 @@ module.exports = function HandleUser(socket){
                     set: {
                         resettoken: token
                     }
+                })
+
+                let htmlData = HTMLLoader.Read("./Mail/resetPasswordMail.html")
+                htmlData = htmlData.replace('{{url}}', `http://${process.env.WEBSITEHOST}:${process.env.WEBSITEPORT}/resetpassword?token=${token}`)
+                htmlData = htmlData.replace('{{username}}', verified.username)
+                let mailState = await Mailer.SendMail({
+                    to: data.email,
+                    subject: 'DataHunt reset password',
+                    html: htmlData
                 })
 
                 //TODO send mail with reset link + token
