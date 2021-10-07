@@ -31,7 +31,9 @@ module.exports = function HandleUser(socket){
                 if(!Salter.VerifyPassword(data.password, user.password)){
                     errors.push("Your username or password is incorrect")
                 }
-                success.push("You successfully logged in")
+                else{
+                    success.push("You successfully logged in")
+                }
             }
         }
         else{
@@ -147,7 +149,7 @@ module.exports = function HandleUser(socket){
                 email: data.email
             }
         })
-        console.log(existingUser)
+        //console.log(existingUser)
         if(existingUser){
             let verified = await User.Find({
                 where: {
@@ -155,39 +157,44 @@ module.exports = function HandleUser(socket){
                     verified: 1
                 }
             })
-            console.log(verified)
+            //console.log(verified)
             if(verified != false){
-                
-                console.log("TODO send mail with reset link")
-                let token = Salter.GenerateRandomToken()  
-                let updatedUser = await User.Update({
+                let user = await User.Find({
                     where: {
                         email: data.email
-                    },
-                    set: {
-                        resettoken: token
                     }
                 })
-
-                let htmlData = HTMLLoader.Read("./Mail/resetPasswordMail.html")
-                htmlData = htmlData.replace('{{url}}', `http://${process.env.WEBSITEHOST}:${process.env.WEBSITEPORT}/resetpassword?token=${token}`)
-                htmlData = htmlData.replace('{{username}}', verified.username)
-                let mailState = await Mailer.SendMail({
-                    to: data.email,
-                    subject: 'DataHunt reset password',
-                    html: htmlData
-                })
-
-                //TODO send mail with reset link + token
-
-                success.push("You now received an email with a reset link")
+                if(user.resettoken == null){
+                    let token = Salter.GenerateRandomToken()  
+                    await User.Update({
+                        where: {
+                            email: data.email
+                        },
+                        set: {
+                            resettoken: token
+                        }
+                    })
+    
+                    let htmlData = HTMLLoader.Read("./Mail/resetPasswordMail.html")
+                    htmlData = htmlData.replace('{{url}}', `http://${process.env.WEBSITEHOST}:${process.env.WEBSITEPORT}/resetpassword?token=${token}`)
+                    htmlData = htmlData.replace('{{username}}', verified.username)
+                    let mailState = await Mailer.SendMail({
+                        to: data.email,
+                        subject: 'DataHunt reset password',
+                        html: htmlData
+                    })
+                    success.push("You now received an email with a reset link")
+                }
+                else{
+                    errors.push("You already received an email with a reset link")
+                }
             } else{
                 errors.push("Account is not verified")
             }
         } else{
             errors.push("Account with that email does not exist")
         }
-        console.log(errors)
+        //console.log(errors)
         socket.emit('forgotPass', {
             errors,
             success
