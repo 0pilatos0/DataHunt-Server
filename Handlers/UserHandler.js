@@ -31,7 +31,9 @@ module.exports = function HandleUser(socket){
                 if(!Salter.VerifyPassword(data.password, user.password)){
                     errors.push("Your username or password is incorrect")
                 }
-                success.push("You successfully logged in")
+                else{
+                    success.push("You successfully logged in")
+                }
             }
         }
         else{
@@ -147,7 +149,7 @@ module.exports = function HandleUser(socket){
                 email: data.email
             }
         })
-        console.log(existingUser)
+        //console.log(existingUser)
         if(existingUser){
             let verified = await User.Find({
                 where: {
@@ -155,7 +157,7 @@ module.exports = function HandleUser(socket){
                     verified: 1
                 }
             })
-            console.log(verified)
+            //console.log(verified)
             if(verified != false){
                 
                 console.log("TODO send mail with reset link")
@@ -187,7 +189,7 @@ module.exports = function HandleUser(socket){
         } else{
             errors.push("Account with that email does not exist")
         }
-        console.log(errors)
+        //console.log(errors)
         socket.emit('forgotPass', {
             errors,
             success
