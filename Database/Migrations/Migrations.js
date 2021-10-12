@@ -1,4 +1,4 @@
-const Migration = require('../../core/Migration');
+const Migration = require('../../Core/Migration');
 const MigrationLogger = require('./MigrationLogger');
 
 module.exports = class Migrations {
