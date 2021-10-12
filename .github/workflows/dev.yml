@@ -19,3 +19,5 @@ jobs:
           token: ${{ secrets.PAT }}
       - run: echo -en "$ENV_FILE" > .env
       - run: npm i
+      - run: pm2 delete Server-Dev
+      - run: pm2 start index.js --name Server-Dev
