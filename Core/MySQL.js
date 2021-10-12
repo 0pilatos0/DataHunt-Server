@@ -6,7 +6,7 @@ module.exports = class MySQL{
         host: process.env.DBHOST,
         user: process.env.DBUSER,
         password: process.env.DBPASS,
-        // database: process.env.DB
+        database: process.env.DB
     })
 
     constructor() {
