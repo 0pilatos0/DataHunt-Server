@@ -138,6 +138,14 @@ module.exports = class Migrations {
             }
         )
 
+        await Migration.CreateTable(
+            {
+                tableName: 'profile_pictures',
+                defaults: [],
+                values: {'user_id': ["INT", "NN"], 'image': ["LONGTEXT"]}
+            }
+        )
+
         MigrationLogger.Log(`Finished migrating ${process.env.DB}`)
     }
 }
