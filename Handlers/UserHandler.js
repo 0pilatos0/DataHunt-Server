@@ -82,7 +82,7 @@ module.exports = function HandleUser(socket){
             errors.push('Password must be filled in')
         }
         if(data.confirmPassword != null){
-            if(!Regex.Password.test(data.confirmPassword) && data.password != data.confirmPassword){
+            if(Regex.Password.test(data.confirmPassword) && data.password != data.confirmPassword){
                 errors.push('Passwords must be the same')
             }
         }
