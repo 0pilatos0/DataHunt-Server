@@ -50,8 +50,7 @@ module.exports = function HandleUser(socket){
         let errors = []
         let success = []
         if(data.name != null){
-            const nameRegex = /^[a-z ,.'-]+$/i
-            if(!nameRegex.test(data.name)){
+            if(!Regex.Name.test(data.name)){
                 errors.push(`Name can't contain numbers`)
             }
         }
@@ -59,8 +58,7 @@ module.exports = function HandleUser(socket){
             errors.push('Name must be filled in')
         }
         if(data.username != null){
-            const usernameRegex = /\w{5,29}/i
-            if(!usernameRegex.test(data.username)){
+            if(!Regex.Username.test(data.username)){
                 errors.push('Username must be between 5 and 29 characters long')
             }
         }
@@ -76,8 +74,7 @@ module.exports = function HandleUser(socket){
             errors.push('Email must be filled in')
         }
         if(data.password != null){
-            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-            if(!passwordRegex.test(data.password)){
+            if(!Regex.Password.test(data.password)){
                 errors.push('Password must be atleast 8 characters long, contain an special character and 1 number and 1 uppercase')
             }
         }
@@ -85,8 +82,7 @@ module.exports = function HandleUser(socket){
             errors.push('Password must be filled in')
         }
         if(data.confirmPassword != null){
-            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-            if(!passwordRegex.test(data.confirmPassword) && data.password != data.confirmPassword){
+            if(!Regex.Password.test(data.confirmPassword) && data.password != data.confirmPassword){
                 errors.push('Passwords must be the same')
             }
         }
