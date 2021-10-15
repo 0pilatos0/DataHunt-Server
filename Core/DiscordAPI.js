@@ -10,7 +10,7 @@ const options = {
     }
 }
 
-module.exports.DiscordAPI = class{
+module.exports = class DiscordAPI{
     constructor(){
         
     }
