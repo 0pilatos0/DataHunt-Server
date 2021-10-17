@@ -35,6 +35,10 @@ module.exports = class Seeders{
         await Seeder.Seed({
             tableName: 'roles'
         })
+
+        await Seeder.Seed({
+            tableName: 'users_roles'
+        })
         
         await Seeder.Seed({
             tableName: 'logintokens'

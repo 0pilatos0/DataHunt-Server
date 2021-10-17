@@ -54,7 +54,15 @@ module.exports = class Migrations {
             {
                 tableName: 'roles',
                 defaults: ['name'],
-                values: {'user_id': ["INT", "NN"]}
+                values: {}
+            }
+        )
+
+        await Migration.CreateTable(
+            {
+                tableName: 'users_roles',
+                defaults: [],
+                values: {'user_id': ["INT", "NN"], 'role_id': ["INT", "NN"]}
             }
         )
 
