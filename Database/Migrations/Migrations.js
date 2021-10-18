@@ -154,6 +154,14 @@ module.exports = class Migrations {
             }
         )
 
+        await Migration.CreateTable(
+            {
+                tableName: 'files',
+                defaults: [],
+                values: {'name': ["LONGTEXT", "NN"], 'file': ["LONGBLOB", "NN"]}
+            }
+        )
+
         MigrationLogger.Log(`Finished migrating ${process.env.DB}`)
     }
 }

@@ -80,6 +80,10 @@ module.exports = class Seeders{
             tableName: 'profile_pictures'
         })
 
+        await Seeder.Seed({
+            tableName: 'files'
+        })
+
         SeederLogger.Log(`Finished seeding ${process.env.DB}`)
     }
 }
