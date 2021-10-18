@@ -6,14 +6,14 @@ module.exports = class Model{
         
     }
 
-    static async Select({select, where, limit, joins} = {}){
+    static async Select({select, where, limit, joins, orderBy} = {}){
         let values = []
         if(where){
             let whereData = this.ParseWhereObject(where)
             where = whereData.where
             values = values.concat(whereData.values)
         }
-        return MySQL.Query(`SELECT ${select || '*'} FROM ${this.table} ${joins ? joins.join(' ') : ''}${where ? ` WHERE ${where}` : ''}${limit ? ` LIMIT ${limit}` : ''}`, values)
+        return MySQL.Query(`SELECT ${select || '*'} FROM ${this.table} ${joins ? joins.join(' ') : ''}${where ? ` WHERE ${where}` : ''}${orderBy ? ` ${orderBy.toUpperCase()}` : ''}${limit ? ` LIMIT ${limit}` : ''}`, values)
     }
 
     static async Delete({where}){
@@ -48,19 +48,22 @@ module.exports = class Model{
         return await this.Select()
     }
 
-    static async First({where}){
+    static async First({where, select}){
         let first = await this.Select({
             limit: 1,
-            where
+            where,
+            select
         })
         if(first.length != undefined) return first[0]
         else return false
     }
 
-    static async Last({where}){
+    static async Last({where, select}){
         let last = await this.Select({
             limit: 1,
-            where
+            where,
+            orderBy: 'ORDER BY id DESC',
+            select
         })
         if(last.length != undefined) return last[0]
         else return false
