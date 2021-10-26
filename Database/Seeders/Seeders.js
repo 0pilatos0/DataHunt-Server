@@ -33,7 +33,12 @@ module.exports = class Seeders{
         })
         
         await Seeder.Seed({
-            tableName: 'roles'
+            tableName: 'roles',
+            customData: [
+                {
+                    'name': 'admin'
+                }
+            ]
         })
 
         await Seeder.Seed({
@@ -49,11 +54,50 @@ module.exports = class Seeders{
         })
         
         await Seeder.Seed({
-            tableName: 'items_stats'
-        })
-        
-        await Seeder.Seed({
-            tableName: 'items'
+            tableName: 'items',
+            customData: [
+                {
+                    'name': 'Wooden Sword',
+                    'required_level': 1,
+                    'type': 'sword',
+                    'rarity': 1,
+                    'min_value': 1,
+                    'max_value': 1,
+                    'texture': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACgBAMAAAB54XoeAAAAIVBMVEUAAAAgGAooHgs3KRBHNhRJNhVZQxloTh51WCGGZSaJZyeZJO70AAAAAXRSTlMAQObYZgAAAKpJREFUeF7t1UENw0AMRNFSWAqlYApLoRRCIRRCoRSKshofdtTIkSq1N/9/97uNfPu5+AwQELC0DvVUQwECAl5bqQICAv7ZAgRkJICAjISRAALGqrI2VVkdQUDAqUJVVqq2OoKAgBZ8l8KhSgsQEDCb6mQBAgKW7+psAQICPtSukonMKiAgYFovdVfpj5XVjiAgYKx2ZcuZ7g0CAk717VA7goCAwwFeBQj4BrVdlE9ZMX1KAAAAAElFTkSuQmCC'
+                }, {
+                    'name': 'Bandana',
+                    'required_level': 1,
+                    'type': 'helmet',
+                    'rarity': 1,
+                    'min_value': 1,
+                    'max_value': 1,
+                    'texture': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACgBAMAAAB54XoeAAAAIVBMVEUAAAAgGAooHgs3KRBHNhRJNhVZQxloTh51WCGGZSaJZyeZJO70AAAAAXRSTlMAQObYZgAAAKpJREFUeF7t1UENw0AMRNFSWAqlYApLoRRCIRRCoRSKshofdtTIkSq1N/9/97uNfPu5+AwQELC0DvVUQwECAl5bqQICAv7ZAgRkJICAjISRAALGqrI2VVkdQUDAqUJVVqq2OoKAgBZ8l8KhSgsQEDCb6mQBAgKW7+psAQICPtSukonMKiAgYFovdVfpj5XVjiAgYKx2ZcuZ7g0CAk717VA7goCAwwFeBQj4BrVdlE9ZMX1KAAAAAElFTkSuQmCC'
+                }, {
+                    'name': 'Pizza Slices',
+                    'required_level': 1,
+                    'type': 'chestplate',
+                    'rarity': 1,
+                    'min_value': 1,
+                    'max_value': 1,
+                    'texture': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACgBAMAAAB54XoeAAAAIVBMVEUAAAAgGAooHgs3KRBHNhRJNhVZQxloTh51WCGGZSaJZyeZJO70AAAAAXRSTlMAQObYZgAAAKpJREFUeF7t1UENw0AMRNFSWAqlYApLoRRCIRRCoRSKshofdtTIkSq1N/9/97uNfPu5+AwQELC0DvVUQwECAl5bqQICAv7ZAgRkJICAjISRAALGqrI2VVkdQUDAqUJVVqq2OoKAgBZ8l8KhSgsQEDCb6mQBAgKW7+psAQICPtSukonMKiAgYFovdVfpj5XVjiAgYKx2ZcuZ7g0CAk717VA7goCAwwFeBQj4BrVdlE9ZMX1KAAAAAElFTkSuQmCC'
+                }, {
+                    'name': 'Shorts',
+                    'required_level': 1,
+                    'type': 'leggings',
+                    'rarity': 1,
+                    'min_value': 1,
+                    'max_value': 1,
+                    'texture': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACgBAMAAAB54XoeAAAAIVBMVEUAAAAgGAooHgs3KRBHNhRJNhVZQxloTh51WCGGZSaJZyeZJO70AAAAAXRSTlMAQObYZgAAAKpJREFUeF7t1UENw0AMRNFSWAqlYApLoRRCIRRCoRSKshofdtTIkSq1N/9/97uNfPu5+AwQELC0DvVUQwECAl5bqQICAv7ZAgRkJICAjISRAALGqrI2VVkdQUDAqUJVVqq2OoKAgBZ8l8KhSgsQEDCb6mQBAgKW7+psAQICPtSukonMKiAgYFovdVfpj5XVjiAgYKx2ZcuZ7g0CAk717VA7goCAwwFeBQj4BrVdlE9ZMX1KAAAAAElFTkSuQmCC'
+                }, {
+                    'name': 'Flip Flops',
+                    'required_level': 1,
+                    'type': 'boots',
+                    'rarity': 1,
+                    'min_value': 1,
+                    'max_value': 1,
+                    'texture': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACgBAMAAAB54XoeAAAAIVBMVEUAAAAgGAooHgs3KRBHNhRJNhVZQxloTh51WCGGZSaJZyeZJO70AAAAAXRSTlMAQObYZgAAAKpJREFUeF7t1UENw0AMRNFSWAqlYApLoRRCIRRCoRSKshofdtTIkSq1N/9/97uNfPu5+AwQELC0DvVUQwECAl5bqQICAv7ZAgRkJICAjISRAALGqrI2VVkdQUDAqUJVVqq2OoKAgBZ8l8KhSgsQEDCb6mQBAgKW7+psAQICPtSukonMKiAgYFovdVfpj5XVjiAgYKx2ZcuZ7g0CAk717VA7goCAwwFeBQj4BrVdlE9ZMX1KAAAAAElFTkSuQmCC'
+                }, 
+            ]
         })
         
         await Seeder.Seed({
@@ -61,7 +105,49 @@ module.exports = class Seeders{
         })
         
         await Seeder.Seed({
-            tableName: 'inventory'
+            tableName: 'inventory',
+            customData: [
+                {
+                    'character_id': 2,
+                    'json': {
+                        "weapons": [
+                            {
+                                name: "Wooden Sword",
+                                value: 1,
+                                rarity: 1
+                            }
+                        ],
+                        "helmet": [
+                            {
+                                name: "Bandana",
+                                value: 1,
+                                rarity: 1
+                            }
+                        ],
+                        "chestpiece": [
+                            {
+                                name: "Pizza Slices",
+                                value: 1,
+                                rarity: 1
+                            }
+                        ],
+                        "leggings": [
+                            {
+                                name: "Shorts",
+                                value: 1,
+                                rarity: 1
+                            }
+                        ],
+                        "boots": [
+                            {
+                                name: "Flip Flops",
+                                value: 1,
+                                rarity: 1
+                            }
+                        ]
+                    }
+                }
+            ]
         })
         
         await Seeder.Seed({

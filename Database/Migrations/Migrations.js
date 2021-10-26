@@ -14,7 +14,7 @@ module.exports = class Migrations {
             {
                 tableName: 'users',
                 defaults: ['name', 'username'],
-                values: {'email': ["varchar(255)", "NN"], 'password': ["varchar(255)", "NN"], 'enabled': ["BOOLEAN", "NN", "DEFAULT 1"], "resetpassword": ["varchar(255)"], "verifytoken": ["varchar(255)"], "verified": ["BOOLEAN", "DEFAULT 0"], "resettoken": ["varchar(255)"]}
+                values: {'email': ["varchar(25)", "NN"], 'password': ["varchar(255)", "NN"], 'enabled': ["BOOLEAN", "NN", "DEFAULT 1"], "resetpassword": ["varchar(255)"], "verifytoken": ["varchar(255)"], "verified": ["BOOLEAN", "DEFAULT 0"], "resettoken": ["varchar(255)"]}
             }
         )
 
@@ -134,15 +134,7 @@ module.exports = class Migrations {
             {
                 tableName: 'items',
                 defaults: ['name'],
-                values: {'items_stats_id': ["INT", "NN"], 'type': ["INT", "NN"], 'rarity': ["INT", "NN"], 'stats_range': ["INT", "NN"], 'texture': ["INT", "NN"]}
-            }
-        )
-
-        await Migration.CreateTable(
-            {
-                tableName: 'items_stats',
-                defaults: [],
-                values: {'required_level': ["INT", "NN"], 'min_value': ["INT", "NN"], 'max_value': ["INT", "NN"]}
+                values: {'required_level': ["INT", "NN"], 'type': ["VARCHAR(255)", "NN"], 'rarity': ["INT", "NN"], 'min_value': ["INT", "NN"], 'max_value': ["INT", "NN"], 'texture': ["LONGBLOB", "NN"]}
             }
         )
 
