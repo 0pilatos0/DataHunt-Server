@@ -1,12 +1,12 @@
 const Migration = require('../../Core/Migration');
-const MigrationLogger = require('./MigrationLogger');
+const Logger = require('../Logger');
 
 module.exports = class Migrations {
     constructor() {
     }
 
     static async Run() {
-        MigrationLogger.Start(`Started migrating ${process.env.DB}`)
+        Logger.Start(`Started migrating ${process.env.DB}`)
 
         await Migration.CreateDatabase(process.env.DB)
 
@@ -162,6 +162,6 @@ module.exports = class Migrations {
             }
         )
 
-        MigrationLogger.Log(`Finished migrating ${process.env.DB}`)
+        Logger.Log(`Finished migrating ${process.env.DB}`)
     }
 }

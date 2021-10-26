@@ -2,7 +2,7 @@ const Mailer = require("../Core/Mailer")
 const Regex = require("../Core/Regex")
 const Salter = require("../Core/Salter")
 const HTMLLoader = require("../Loaders/HTMLLoader")
-const User = require("../Models/User")
+const UsersModel = require('../Database/Models/UsersModel.js')
 
 module.exports = function HandleUser(socket){
     socket.on('login', async (data) => {
@@ -15,7 +15,7 @@ module.exports = function HandleUser(socket){
         if(!data.password){
             errors.push('Password must be filled in')
         }
-        let user = await User.Find({
+        let user = await UsersModel.Find({
             where:{
                 email: data.email
             }
@@ -91,14 +91,14 @@ module.exports = function HandleUser(socket){
         }
         if(errors.length == 0){
             let verifyToken = Salter.GenerateRandomToken()
-            let existingUser = await User.FindId({
+            let existingUser = await UsersModel.FindId({
                 where: {
                     username: data.username,
                     email: data.email
                 }
             })
             if(existingUser == false){
-                let createdUser = await User.Create({
+                let createdUser = await UsersModel.Create({
                     create:{
                         name: data.name,
                         username: data.username,
@@ -140,14 +140,14 @@ module.exports = function HandleUser(socket){
                 errors.push(`Email must contain an '@'`)
             }
         }
-        let existingUser = await User.FindId({
+        let existingUser = await UsersModel.FindId({
             where: {
                 email: data.email
             }
         })
         //console.log(existingUser)
         if(existingUser){
-            let verified = await User.Find({
+            let verified = await UsersModel.Find({
                 where: {
                     email: data.email,
                     verified: 1
@@ -155,14 +155,14 @@ module.exports = function HandleUser(socket){
             })
             //console.log(verified)
             if(verified != false){
-                let user = await User.Find({
+                let user = await UsersModel.Find({
                     where: {
                         email: data.email
                     }
                 })
                 if(user.resettoken == null){
                     let token = Salter.GenerateRandomToken()  
-                    await User.Update({
+                    await UsersModel.Update({
                         where: {
                             email: data.email
                         },
