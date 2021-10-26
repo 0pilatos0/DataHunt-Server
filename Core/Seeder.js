@@ -6,8 +6,12 @@ module.exports = class Seeder{
 
     }
 
-    static async Seed({tableName, amount = 1}){
+    static async Seed({tableName, amount = 1, customData = null}){
         SeederLogger.Log(`Started seeding ${tableName}`)
+        //calculate customData to amount
+        if(customData !== null) {
+            amount = customData.length;
+        }
         for (let i = 0; i < amount; i++) {
             let data = await MySQL.Query(`SHOW COLUMNS FROM ${tableName}`)
             const digitRegex = /\d+/g
@@ -21,70 +25,83 @@ module.exports = class Seeder{
                     // console.log(column.Type)
                     // console.log(column.Default)
                     
-                    switch (column.Type) {
-                        case "timestamp":
-                        case "datetime":
-                            //Generate random datetime
-                            let date = new Date(+(new Date()) - Math.floor(Math.random() * 10000000000)).toISOString().slice(0, 19).replace('T', ' ')
-                            parsedColumns.push({
-                                field: column.Field,
-                                value: date
-                            })
-                            break;
-                        case "boolean":
+                    if(customData == null || typeof customData[i] == 'undefined' || !customData[i][column.Field]){
+                        switch (column.Type) {
+                            case "timestamp":
+                            case "datetime":
+                                //Generate random datetime
+                                let date = new Date(+(new Date()) - Math.floor(Math.random() * 10000000000)).toISOString().slice(0, 19).replace('T', ' ')
+                                parsedColumns.push({
+                                    field: column.Field,
+                                    value: date
+                                })
+                                break;
+                            case "boolean":
+                                let int = Math.round(Math.random())
+                                parsedColumns.push({
+                                    field: column.Field,
+                                    value: int
+                                })
+                                break;
+                            default:
+                                break;
+                        }
+                        if(column.Type.includes("tinyint")){
                             let int = Math.round(Math.random())
                             parsedColumns.push({
                                 field: column.Field,
                                 value: int
                             })
-                            break;
-                        default:
-                            break;
-                    }
-                    if(column.Type.includes("tinyint")){
-                        let int = Math.round(Math.random())
-                        parsedColumns.push({
-                            field: column.Field,
-                            value: int
-                        })
-                    }
-                    else if(column.Type.includes("int")){
-                        //Generate random int between 1 and maxLength
-                        let int = ""
-                        for (let i = 0; i < 4; i++) {
-                            int += Math.round(Math.random() * 9)
                         }
-                        parsedColumns.push({
-                            field: column.Field,
-                            value: int
-                        })
-                    }
-                    if(column.Type.includes("varchar")){
-                        //Generate random string between 1 and maxLength
-                        let string = ""
-                        if(column.Type.match(digitRegex)){
-                            let maxLength = column.Type.match(digitRegex)[0]
-                            for (let i = 0; i < maxLength; i++) {
+                        else if(column.Type.includes("int")){
+                            //Generate random int between 1 and maxLength
+                            let int = ""
+                            for (let i = 0; i < 4; i++) {
+                                int += Math.round(Math.random() * 9)
+                            }
+                            parsedColumns.push({
+                                field: column.Field,
+                                value: int
+                            })
+                        }
+                        if(column.Type.includes("varchar")){
+                            //Generate random string between 1 and maxLength
+                            let string = ""
+                            if(column.Type.match(digitRegex)){
+                                let maxLength = column.Type.match(digitRegex)[0]
+                                for (let i = 0; i < maxLength; i++) {
+                                    string += chars[Math.floor(Math.random() * chars.length)]
+                                }
+                            }
+                            else{
                                 string += chars[Math.floor(Math.random() * chars.length)]
                             }
+                            parsedColumns.push({
+                                field: column.Field,
+                                value: string
+                            })
                         }
-                        else{
-                            string += chars[Math.floor(Math.random() * chars.length)]
+                        if(column.Type.includes("text") || column.Type.includes("blob")){
+                            //Generate random text
+                            let string = ""
+                            for (let i = 0; i < 1024; i++) {
+                                string += chars[Math.floor(Math.random() * chars.length)]
+                            }
+                            parsedColumns.push({
+                                field: column.Field,
+                                value: string
+                            })
                         }
-                        parsedColumns.push({
-                            field: column.Field,
-                            value: string
-                        })
-                    }
-                    if(column.Type.includes("text") || column.Type.includes("blob")){
-                        //Generate random text
-                        let string = ""
-                        for (let i = 0; i < 1024; i++) {
-                            string += chars[Math.floor(Math.random() * chars.length)]
-                        }
-                        parsedColumns.push({
-                            field: column.Field,
-                            value: string
+                    }else{
+                        let customDataRow = customData[i]
+                        //console.log(customDataRow)
+                        Object.entries(customDataRow).map(entry => {
+                            if(entry[0] == column.Field){
+                                parsedColumns.push({
+                                    field: column.Field,
+                                    value: entry[1]
+                                })
+                            }
                         })
                     }
                 }
