@@ -28,7 +28,7 @@ module.exports = class LogintokensSeeder extends Seeder {
 		else {
 			data.token = ''
 			const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split("")
-			for (let i = 0; i < 100; i++) {
+			for (let i = 0; i < 25; i++) {
 				data.token += chars[Math.round(Math.random() * chars.length)]
 			}
 		}

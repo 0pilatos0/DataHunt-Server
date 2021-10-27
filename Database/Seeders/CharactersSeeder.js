@@ -25,7 +25,7 @@ module.exports = class CharactersSeeder extends Seeder {
 		else {
 			data.name = ''
 			const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split("")
-			for (let i = 0; i < 100; i++) {
+			for (let i = 0; i < 25; i++) {
 				data.name += chars[Math.round(Math.random() * chars.length)]
 			}
 		}
@@ -69,7 +69,7 @@ module.exports = class CharactersSeeder extends Seeder {
 		else {
 			data.deaths = ''
 			const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split("")
-			for (let i = 0; i < 100; i++) {
+			for (let i = 0; i < 25; i++) {
 				data.deaths += chars[Math.round(Math.random() * chars.length)]
 			}
 		}

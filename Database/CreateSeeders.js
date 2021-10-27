@@ -34,13 +34,20 @@ async function CreateSeeders(){
                     column.type = 'boolean'
                     randomCode += `Math.round(Math.random())`
                     break;
-                case 'longblob':
                 case 'varchar':
+                    column.type = 'string'
+                    randomCode += "''\r\n\t\t\t"
+                    randomCode += "const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split(\"\")\r\n\t\t\t"
+                    randomCode += `for (let i = 0; i < ${Math.min(column.length, 25)}; i++) {\r\n\t\t\t\t`
+                    randomCode += `data.${column.name} += chars[Math.round(Math.random() * chars.length)]\r\n\t\t\t`
+                    randomCode += "}"
+                    break;
+                case 'longblob':
                 case 'longtext':
                     column.type = 'string'
                     randomCode += "''\r\n\t\t\t"
                     randomCode += "const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split(\"\")\r\n\t\t\t"
-                    randomCode += `for (let i = 0; i < ${Math.min(column.length, 100)}; i++) {\r\n\t\t\t\t`
+                    randomCode += `for (let i = 0; i < ${Math.min(column.length, 1024)}; i++) {\r\n\t\t\t\t`
                     randomCode += `data.${column.name} += chars[Math.round(Math.random() * chars.length)]\r\n\t\t\t`
                     randomCode += "}"
                     break;

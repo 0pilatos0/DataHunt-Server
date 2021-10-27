@@ -46,7 +46,7 @@ module.exports = class FriendsSeeder extends Seeder {
 		else {
 			data.status = ''
 			const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split("")
-			for (let i = 0; i < 100; i++) {
+			for (let i = 0; i < 25; i++) {
 				data.status += chars[Math.round(Math.random() * chars.length)]
 			}
 		}

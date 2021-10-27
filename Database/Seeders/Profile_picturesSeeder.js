@@ -28,7 +28,7 @@ module.exports = class Profile_picturesSeeder extends Seeder {
 		else {
 			data.image = ''
 			const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split("")
-			for (let i = 0; i < 100; i++) {
+			for (let i = 0; i < 1024; i++) {
 				data.image += chars[Math.round(Math.random() * chars.length)]
 			}
 		}

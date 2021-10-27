@@ -25,7 +25,7 @@ module.exports = class ItemsSeeder extends Seeder {
 		else {
 			data.name = ''
 			const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split("")
-			for (let i = 0; i < 100; i++) {
+			for (let i = 0; i < 25; i++) {
 				data.name += chars[Math.round(Math.random() * chars.length)]
 			}
 		}
@@ -45,7 +45,7 @@ module.exports = class ItemsSeeder extends Seeder {
 		else {
 			data.type = ''
 			const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split("")
-			for (let i = 0; i < 100; i++) {
+			for (let i = 0; i < 25; i++) {
 				data.type += chars[Math.round(Math.random() * chars.length)]
 			}
 		}
@@ -81,7 +81,7 @@ module.exports = class ItemsSeeder extends Seeder {
 		else {
 			data.texture = ''
 			const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split("")
-			for (let i = 0; i < 100; i++) {
+			for (let i = 0; i < 1024; i++) {
 				data.texture += chars[Math.round(Math.random() * chars.length)]
 			}
 		}

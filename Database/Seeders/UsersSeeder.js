@@ -27,7 +27,7 @@ module.exports = class UsersSeeder extends Seeder {
 		else {
 			data.name = ''
 			const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split("")
-			for (let i = 0; i < 100; i++) {
+			for (let i = 0; i < 25; i++) {
 				data.name += chars[Math.round(Math.random() * chars.length)]
 			}
 		}
@@ -39,7 +39,7 @@ module.exports = class UsersSeeder extends Seeder {
 		else {
 			data.username = ''
 			const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split("")
-			for (let i = 0; i < 100; i++) {
+			for (let i = 0; i < 25; i++) {
 				data.username += chars[Math.round(Math.random() * chars.length)]
 			}
 		}
@@ -51,7 +51,7 @@ module.exports = class UsersSeeder extends Seeder {
 		else {
 			data.email = ''
 			const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split("")
-			for (let i = 0; i < 100; i++) {
+			for (let i = 0; i < 25; i++) {
 				data.email += chars[Math.round(Math.random() * chars.length)]
 			}
 		}
@@ -63,7 +63,7 @@ module.exports = class UsersSeeder extends Seeder {
 		else {
 			data.password = ''
 			const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split("")
-			for (let i = 0; i < 100; i++) {
+			for (let i = 0; i < 25; i++) {
 				data.password += chars[Math.round(Math.random() * chars.length)]
 			}
 		}
@@ -80,7 +80,7 @@ module.exports = class UsersSeeder extends Seeder {
 		else {
 			data.resetpassword = ''
 			const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split("")
-			for (let i = 0; i < 100; i++) {
+			for (let i = 0; i < 25; i++) {
 				data.resetpassword += chars[Math.round(Math.random() * chars.length)]
 			}
 		}
@@ -92,7 +92,7 @@ module.exports = class UsersSeeder extends Seeder {
 		else {
 			data.verifytoken = ''
 			const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split("")
-			for (let i = 0; i < 100; i++) {
+			for (let i = 0; i < 25; i++) {
 				data.verifytoken += chars[Math.round(Math.random() * chars.length)]
 			}
 		}
@@ -109,7 +109,7 @@ module.exports = class UsersSeeder extends Seeder {
 		else {
 			data.resettoken = ''
 			const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split("")
-			for (let i = 0; i < 100; i++) {
+			for (let i = 0; i < 25; i++) {
 				data.resettoken += chars[Math.round(Math.random() * chars.length)]
 			}
 		}

@@ -19,7 +19,7 @@ module.exports = class RolesSeeder extends Seeder {
 		else {
 			data.name = ''
 			const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split("")
-			for (let i = 0; i < 100; i++) {
+			for (let i = 0; i < 25; i++) {
 				data.name += chars[Math.round(Math.random() * chars.length)]
 			}
 		}

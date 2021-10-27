@@ -28,7 +28,7 @@ module.exports = class InventorySeeder extends Seeder {
 		else {
 			data.json = ''
 			const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split("")
-			for (let i = 0; i < 100; i++) {
+			for (let i = 0; i < 1024; i++) {
 				data.json += chars[Math.round(Math.random() * chars.length)]
 			}
 		}

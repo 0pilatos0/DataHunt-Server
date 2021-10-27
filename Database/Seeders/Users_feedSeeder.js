@@ -29,7 +29,7 @@ module.exports = class Users_feedSeeder extends Seeder {
 		else {
 			data.message = ''
 			const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split("")
-			for (let i = 0; i < 100; i++) {
+			for (let i = 0; i < 1024; i++) {
 				data.message += chars[Math.round(Math.random() * chars.length)]
 			}
 		}

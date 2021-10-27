@@ -21,7 +21,7 @@ module.exports = class AchievementsSeeder extends Seeder {
 		else {
 			data.name = ''
 			const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split("")
-			for (let i = 0; i < 100; i++) {
+			for (let i = 0; i < 25; i++) {
 				data.name += chars[Math.round(Math.random() * chars.length)]
 			}
 		}
@@ -33,7 +33,7 @@ module.exports = class AchievementsSeeder extends Seeder {
 		else {
 			data.description = ''
 			const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split("")
-			for (let i = 0; i < 100; i++) {
+			for (let i = 0; i < 1024; i++) {
 				data.description += chars[Math.round(Math.random() * chars.length)]
 			}
 		}
@@ -45,7 +45,7 @@ module.exports = class AchievementsSeeder extends Seeder {
 		else {
 			data.achievement_type = ''
 			const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split("")
-			for (let i = 0; i < 100; i++) {
+			for (let i = 0; i < 25; i++) {
 				data.achievement_type += chars[Math.round(Math.random() * chars.length)]
 			}
 		}
