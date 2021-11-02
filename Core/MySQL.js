@@ -1,5 +1,5 @@
 const mysql = require('mysql')
-require('dotenv').config({path:'../.env'})
+require('dotenv').config()
 
 module.exports = class MySQL{
     static #con = mysql.createConnection({
