@@ -1,6 +1,8 @@
 
-const Migrations = require('./Database/Migrations/Migrations')
-require('dotenv').config()
+const Migrations = require('./Migrations/Migrations')
+require('dotenv').config({
+    path: '../.env'
+})
 
 
 async function run(){
