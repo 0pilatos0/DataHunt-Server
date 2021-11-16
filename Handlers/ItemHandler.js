@@ -10,23 +10,26 @@ module.exports = function HandleItem(socket) {
             amount++
              if (Object.prototype.hasOwnProperty.call(inventoryData, property)) {
                 returnData[property] = []
+                let index = 0
                 for (let entry = 0; entry < Object.entries(inventoryData[property]).length; entry++) {
                     let data = await Item.GetInventoryItem(inventoryData[property][entry].id)
                     let temp = {}
-
                     Object.keys(data).forEach(result => {
                         temp[result] = data[result]
+                        if(result == 'texture') {
+                            temp[result] = data[result].toString()
+                        }
                     });
-
+                    temp.index = index
                     temp.id = inventoryData[property][entry].id
                     temp.value = inventoryData[property][entry].value
                     returnData[property].push(temp)
+                    index++
                 }
              }
              if(amount == Object.entries(inventoryData).length){
                 socket.emit("returnedInventory", returnData)
             }
         }
-        
     })
 }
