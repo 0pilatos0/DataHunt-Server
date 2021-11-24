@@ -18,10 +18,12 @@ const Users_Bans = require("./Migrations/Users_Bans");
 const Users_Feed = require("./Migrations/Users_Feed");
 const Profile_Pictures = require("./Migrations/Profile_Pictures");
 const Users = require("./Migrations/Users");
+const Database = require("../Core/Database/Database")
 
 run()
 
 async function run(){
+    await Database.create(process.env.DB);
     await new Achievements();
     await new Characters_Achievements();
     await new Characters();
