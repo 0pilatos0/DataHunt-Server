@@ -3,7 +3,10 @@ const Table = require("../../Core/Database/Table")
 module.exports = class Level extends Table{
     constructor() {
         super()
-        this.create('level', {
+    }
+
+    static async Migrate(){
+        await this.create('level', {
             user_id: "INT NN",
             money: "INT NN",
             exp: "INT NN",

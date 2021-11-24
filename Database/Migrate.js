@@ -24,25 +24,25 @@ run()
 
 async function run(){
     await Database.create(process.env.DB);
-    await new Achievements();
-    await new Characters_Achievements();
-    await new Characters();
-    await new Class();
-    await new Files();
-    await new Friends();
-    await new Inventory();
-    await new Items_Stats();
-    await new Items();
-    await new Level();
-    await new Logintokens();
-    await new Pi_Temps();
-    await new Profile_Pictures();
-    await new Roles();
-    await new Stats();
-    await new Users_Achievements();
-    await new Users_Bans();
-    await new Users_Feed();
-    await new Users_Roles();
-    await new Users();
+    await Achievements.Migrate();
+    await Characters_Achievements.Migrate();
+    await Characters.Migrate();
+    await Class.Migrate();
+    await Files.Migrate();
+    await Friends.Migrate();
+    await Inventory.Migrate();
+    await Items_Stats.Migrate();
+    await Items.Migrate();
+    await Level.Migrate();
+    await Logintokens.Migrate();
+    await Pi_Temps.Migrate();
+    await Profile_Pictures.Migrate();
+    await Roles.Migrate();
+    await Stats.Migrate();
+    await Users_Achievements.Migrate();
+    await Users_Bans.Migrate();
+    await Users_Feed.Migrate();
+    await Users_Roles.Migrate();
+    await Users.Migrate();
     process.exit();
 }

@@ -3,7 +3,10 @@ const Table = require("../../Core/Database/Table")
 module.exports = class Users extends Table{
     constructor() {
         super()
-        this.create('users', {
+    }
+
+    static async Migrate(){
+        await this.create('users', {
             name: "VARCHAR(255) NN",
             username: "VARCHAR(255) U NN",
             email: "VARCHAR(255) NN",
