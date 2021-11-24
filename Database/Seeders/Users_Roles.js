@@ -29,6 +29,6 @@ module.exports = class Users_Roles extends Seeder{
 		else {
 			data.role_id = Math.round(Math.random() * 255);
 		};
-        super.Seed(data);
+        await super.Seed(data);
     }
 }

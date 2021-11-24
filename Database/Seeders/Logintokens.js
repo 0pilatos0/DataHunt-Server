@@ -33,6 +33,6 @@ module.exports = class Logintokens extends Seeder{
 				data.token += chars[Math.round(Math.random() * chars.length)];
 			}
 		};
-        super.Seed(data);
+        await super.Seed(data);
     }
 }

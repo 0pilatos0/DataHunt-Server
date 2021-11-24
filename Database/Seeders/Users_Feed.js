@@ -33,6 +33,6 @@ module.exports = class Users_Feed extends Seeder{
 				data.message += chars[Math.round(Math.random() * chars.length)];
 			}
 		};
-        super.Seed(data);
+        await super.Seed(data);
     }
 }

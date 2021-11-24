@@ -47,6 +47,6 @@ module.exports = class Characters_Achievements extends Seeder{
 		else {
 			data.required_value = Math.round(Math.random() * 255);
 		};
-        super.Seed(data);
+        await super.Seed(data);
     }
 }

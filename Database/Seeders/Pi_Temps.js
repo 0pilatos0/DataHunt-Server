@@ -24,6 +24,6 @@ module.exports = class Pi_Temps extends Seeder{
 				data.temp += chars[Math.round(Math.random() * chars.length)];
 			}
 		};
-        super.Seed(data);
+        await super.Seed(data);
     }
 }

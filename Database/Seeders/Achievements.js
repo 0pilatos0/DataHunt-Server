@@ -50,6 +50,6 @@ module.exports = class Achievements extends Seeder{
 				data.achievement_type += chars[Math.round(Math.random() * chars.length)];
 			}
 		};
-        super.Seed(data);
+        await super.Seed(data);
     }
 }

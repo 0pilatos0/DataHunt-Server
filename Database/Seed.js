@@ -18,10 +18,12 @@ const Users_Bans = require("./Seeders/Users_Bans");
 const Users_Feed = require("./Seeders/Users_Feed");
 const Profile_Pictures = require("./Seeders/Profile_Pictures");
 const Users = require("./Seeders/Users");
+const MySQL = require("../Core/MySQL")
 
 run();
 
 async function run(){
+    await MySQL.use(process.env.DB)
     await Achievements.Seed({
 
     });

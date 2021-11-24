@@ -6,6 +6,7 @@ const { firstCharToUpperPerWord } = require("../Core/Utils");
 run()
 
 async function run(){
+    await MySQL.use(process.env.DB)
     let tables = await MySQL.Query(`SHOW TABLES`);
     tables.map(async table => {
         table = table[`Tables_in_${process.env.DB}`];

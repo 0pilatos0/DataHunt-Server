@@ -18,6 +18,10 @@ module.exports = class MySQL{
         })
     }
 
+    static async use(database){
+        await MySQL.Query(`USE ${database}`)
+    }
+
     static async Query(query, values){
         return new Promise((resolve, reject) => {
             con.query(query, values, (err, result) => {

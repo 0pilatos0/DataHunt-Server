@@ -33,6 +33,6 @@ module.exports = class Inventory extends Seeder{
 				data.json += chars[Math.round(Math.random() * chars.length)];
 			}
 		};
-        super.Seed(data);
+        await super.Seed(data);
     }
 }

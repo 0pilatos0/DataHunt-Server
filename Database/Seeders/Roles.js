@@ -24,6 +24,6 @@ module.exports = class Roles extends Seeder{
 				data.name += chars[Math.round(Math.random() * chars.length)];
 			}
 		};
-        super.Seed(data);
+        await super.Seed(data);
     }
 }

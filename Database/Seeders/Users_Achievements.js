@@ -9,19 +9,19 @@ module.exports = class Users_Achievements extends Seeder{
 
     /**
      * @param {Object} data to seed table Users_Achievements
-	 * @param {number} data.character_id Character_Id
+	 * @param {number} data.user_id User_Id
 	 * @param {number} data.achievement_id Achievement_Id
 	 * @param {number} data.progress_value Progress_Value
 	 * @param {number} data.required_value Required_Value
      */
     static async Seed(data){
-        if(typeof data.character_id != "undefined"){
-			if(typeof data.character_id !== "number"){
-				throw new Error('character_id must be typeof number');
+        if(typeof data.user_id != "undefined"){
+			if(typeof data.user_id !== "number"){
+				throw new Error('user_id must be typeof number');
 			}
 		}
 		else {
-			data.character_id = Math.round(Math.random() * 255);
+			data.user_id = Math.round(Math.random() * 255);
 		}
 		if(typeof data.achievement_id != "undefined"){
 			if(typeof data.achievement_id !== "number"){
@@ -47,6 +47,6 @@ module.exports = class Users_Achievements extends Seeder{
 		else {
 			data.required_value = Math.round(Math.random() * 255);
 		};
-        super.Seed(data);
+        await super.Seed(data);
     }
 }

@@ -51,6 +51,6 @@ module.exports = class Friends extends Seeder{
 				data.status += chars[Math.round(Math.random() * chars.length)];
 			}
 		};
-        super.Seed(data);
+        await super.Seed(data);
     }
 }

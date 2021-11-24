@@ -78,6 +78,6 @@ module.exports = class Characters extends Seeder{
 		else {
 			data.level = Math.round(Math.random() * 255);
 		};
-        super.Seed(data);
+        await super.Seed(data);
     }
 }

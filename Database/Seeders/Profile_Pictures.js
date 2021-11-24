@@ -33,6 +33,6 @@ module.exports = class Profile_Pictures extends Seeder{
 				data.image += chars[Math.round(Math.random() * chars.length)];
 			}
 		};
-        super.Seed(data);
+        await super.Seed(data);
     }
 }

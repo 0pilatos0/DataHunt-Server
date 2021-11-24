@@ -114,6 +114,6 @@ module.exports = class Users extends Seeder{
 				data.resettoken += chars[Math.round(Math.random() * chars.length)];
 			}
 		};
-        super.Seed(data);
+        await super.Seed(data);
     }
 }

@@ -37,6 +37,6 @@ module.exports = class Users_Bans extends Seeder{
 		}
 		else {
 			};
-        super.Seed(data);
+        await super.Seed(data);
     }
 }

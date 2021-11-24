@@ -38,6 +38,6 @@ module.exports = class Items_Stats extends Seeder{
 		else {
 			data.max_value = Math.round(Math.random() * 255);
 		};
-        super.Seed(data);
+        await super.Seed(data);
     }
 }

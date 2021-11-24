@@ -83,6 +83,6 @@ module.exports = class Level extends Seeder{
 		else {
 			data.defense = Math.round(Math.random() * 255);
 		};
-        super.Seed(data);
+        await super.Seed(data);
     }
 }

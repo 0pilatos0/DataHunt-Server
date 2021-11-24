@@ -37,6 +37,6 @@ module.exports = class Files extends Seeder{
 				data.file += chars[Math.round(Math.random() * chars.length)];
 			}
 		};
-        super.Seed(data);
+        await super.Seed(data);
     }
 }
