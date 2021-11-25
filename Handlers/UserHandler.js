@@ -96,33 +96,42 @@ module.exports = function HandleUser(socket){
             let verifyToken = Salter.GenerateRandomToken()
             let existingUser = await User.FindId({
                 where: {
-                    username: data.username,
-                    email: data.email
+                    username: data.username
                 }
             })
-            if(existingUser == false){
-                let createdUser = await User.Create({
-                    create:{
-                        name: data.name,
-                        username: data.username,
-                        email: data.email,
-                        password: Salter.HashPassword(data.password),
-                        verifyToken: verifyToken
+            if(existingUser !== false){
+                errors.push("Account with that username already exists")
+            }
+            if(errors.length == 0){
+                existingUser = await User.FindId({
+                    where: {
+                        email: data.email
                     }
                 })
-                //console.log(createdUser)
-                let htmlData = HTMLLoader.Read("./Mail/activationMail.html")
-                htmlData = htmlData.replace('{{url}}', `http://${process.env.WEBSITEHOST}:${process.env.WEBSITEPORT}/verify?token=${verifyToken}`)
-                htmlData = htmlData.replace('{{username}}', data.username)
-                let mailState = await Mailer.SendMail({
-                    to: data.email,
-                    subject: 'DataHunt user registration',
-                    html: htmlData
-                })
-                success.push("You now received an email with a verification link to verify your account")
-            }
-            else{
-                errors.push("Account with that email or username already exists")
+                if(existingUser == false){
+                    let createdUser = await User.Create({
+                        create:{
+                            name: data.name,
+                            username: data.username,
+                            email: data.email,
+                            password: Salter.HashPassword(data.password),
+                            verifyToken: verifyToken
+                        }
+                    })
+                    //console.log(createdUser)
+                    let htmlData = HTMLLoader.Read("./Mail/activationMail.html")
+                    htmlData = htmlData.replace('{{url}}', `http://${process.env.WEBSITEHOST}:${process.env.WEBSITEPORT}/verify?token=${verifyToken}`)
+                    htmlData = htmlData.replace('{{username}}', data.username)
+                    let mailState = await Mailer.SendMail({
+                        to: data.email,
+                        subject: 'DataHunt user registration',
+                        html: htmlData
+                    })
+                    success.push("You now received an email with a verification link to verify your account")
+                }
+                else{
+                    errors.push("Account with that email already exists")
+                }
             }
         }
         socket.emit('register', {
