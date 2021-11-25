@@ -9,6 +9,7 @@ module.exports = function HandleUser(socket){
         //console.log(data)
         let errors = []
         let success = []
+        let returnData = {}
         if(!data.email){
             errors.push('Email must be filled in')
         }
@@ -32,6 +33,7 @@ module.exports = function HandleUser(socket){
                     errors.push("Your username or password is incorrect")
                 }
                 else{
+                    returnData.username = user.username
                     success.push("You successfully logged in")
                 }
             }
@@ -41,7 +43,8 @@ module.exports = function HandleUser(socket){
         }
         socket.emit('login', {
             errors,
-            success
+            success,
+            returnData
         })
     })
 
