@@ -1,92 +1,70 @@
-require('dotenv').config({
-    path: '../.env'
-})
-const fs = require('fs')
-const MySQL = require('../Core/MySQL')
-const Logger = require('./Logger')
+require('dotenv').config({path: "../.env"})
+const MySQL = require("../Core/MySQL");
+const fs = require('fs');
+const pluralize = require('pluralize');
+const { firstCharToUpperPerWord } = require("../Core/Utils");
 
-CreateSeeders()
+run()
 
-async function CreateSeeders(){
-    Logger.Start("Started creating seeders")
-    fs.rmSync('./Seeders/', {recursive: true, force: true})
-    fs.mkdirSync('./Seeders')
-    await MySQL.Query(`USE ${process.env.DB}`)
-    let tables = await MySQL.Query(`SELECT table_name AS name FROM information_schema.tables WHERE table_schema = '${process.env.DB}'`)
+async function run(){
+    await MySQL.use(process.env.DB)
+    let tables = await MySQL.Query(`SHOW TABLES`);
     let doneTables = 0
     tables.map(async table => {
-        const fileName = `${firstCharToUpper(table.name)}Seeder.js`
-        Logger.Log(`Started creating seeder ${fileName}`)
-        const path = `./Seeders/${fileName}`
-        fs.writeFileSync(path, `const Seeder = require('../../Core/Seeder')\r\n\r\nmodule.exports = class ${firstCharToUpper(table.name)}Seeder extends Seeder {\r\n\tconstructor(){\r\n\t\tsuper()\r\n\t}`)
-        let commentString = `/**\r\n\t *\r\n\t * @param {Object} data to seed table ${table.name}\r\n\t`
-        let codeString = `\t`
-        let columns = await MySQL.Query(`SELECT column_name AS name, data_type AS type, character_maximum_length AS length, column_default AS defaultValue, is_nullable AS nullable, table_name AS tableName, extra AS extra FROM information_schema.columns WHERE table_schema = '${process.env.DB}' AND table_name = '${table.name}' ORDER BY table_name, ordinal_position`)
+        table = table[`Tables_in_${process.env.DB}`];
+        let tableName = firstCharToUpperPerWord(table);
+        let comment = ` * @param {Object} data to seed table ${tableName}\r\n\t`;
+        let logic = "";
+        let columns = await MySQL.Query(`SHOW COLUMNS FROM ${table}`);
         columns.map(column => {
-            if(column.name == 'id' || column.name == 'created_at' || column.name == 'updated_at') return //this to skip default values, so they can't be filled
-            let randomCode = `data.${column.name} = `
-            switch (column.type) {
-                case 'int':
-                    column.type = 'number'
-                    randomCode += `Math.round(Math.random() * 255)`
-                    break;
-                case 'tinyint':
-                    column.type = 'boolean'
-                    randomCode += `Math.round(Math.random())`
-                    break;
-                case 'varchar':
-                    column.type = 'string'
-                    randomCode += "''\r\n\t\t\t"
-                    randomCode += "const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split(\"\")\r\n\t\t\t"
-                    randomCode += `for (let i = 0; i < ${Math.min(column.length, 25)}; i++) {\r\n\t\t\t\t`
-                    randomCode += `data.${column.name} += chars[Math.round(Math.random() * chars.length)]\r\n\t\t\t`
-                    randomCode += "}"
-                    break;
-                case 'longblob':
-                case 'longtext':
-                    column.type = 'string'
-                    randomCode += "''\r\n\t\t\t"
-                    randomCode += "const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split(\"\")\r\n\t\t\t"
-                    randomCode += `for (let i = 0; i < ${Math.min(column.length, 1024)}; i++) {\r\n\t\t\t\t`
-                    randomCode += `data.${column.name} += chars[Math.round(Math.random() * chars.length)]\r\n\t\t\t`
-                    randomCode += "}"
-                    break;
-                case 'timestamp':
-                case 'datetime':
-                    column.type = 'Date'
-                    randomCode += "new Date(`${new Date(+(new Date()) - Math.floor(Math.random() * 10000000000)).toISOString().slice(0, 19).replace('T', ' ')}`)"
-                    break;
-                default:
-                    break;
+            if(column.Extra == "auto_increment" || column.Extra.includes("DEFAULT_GENERATED") || column.Default == "current_timestamp()") return;
+            let parsedType = "";
+            if(column.Type.includes("tinyint")){
+                parsedType = "boolean";
             }
-            commentString += ` * @param {${column.type}} data.${column.name} ${firstCharToUpper(column.name)}\r\n\t`
-            codeString += `if(typeof data.${column.name} != 'undefined'){\r\n\t\t\t`
-            codeString += `if(typeof data.${column.name} !== '${column.type}'){\r\n\t\t\t\t`
-            codeString += `throw new Error('${column.name} must be typeof ${column.type}')\r\n\t\t\t`
-            codeString += `}\r\n\t\t`
-            codeString += `}\r\n\t\t`
-            if(column.extra.indexOf('auto_increment') == -1 && column.extra.indexOf('DEFAULT_GENERATED') == -1 && column.defaultValue == null){
-                codeString += `else {\r\n\t\t`
-                codeString += `\t${randomCode}\r\n\t\t`
-                codeString += `}\r\n\t\t`
+            else if(column.Type.includes("int")){
+                parsedType = "number";
             }
-        })
-        commentString += ` */`
-        fs.appendFileSync(path, `\r\n\r\n\t${commentString}\r\n\tstatic async Seed(data){\r\n\t`)
-        fs.appendFileSync(path, codeString)
-        fs.appendFileSync(path, `await super.Seed({tableName:"${table.name}", data})`)
-        fs.appendFileSync(path, `\r\n\t}`)
-        fs.appendFileSync(path, `\r\n}`)
-        Logger.Log(`Finished creating seeder ${fileName}`)
+            if(column.Type.includes("varchar") || column.Type.includes("text") || column.Type.includes("blob")){
+                parsedType = "string";
+            }
+            if(column.Type.includes("datetime") || column.Type.includes("timestamp")){
+                parsedType = "Date"
+            }
+            comment += ` * @param {${parsedType}} data.${column.Field} ${firstCharToUpperPerWord(column.Field)}\r\n\t`;
+            logic += `if(typeof data.${column.Field} != "undefined"){\r\n\t\t\t`;
+            logic += `if(typeof data.${column.Field} !== "${parsedType}"){\r\n\t\t\t\t`;
+            logic += `throw new Error('${column.Field} must be typeof ${parsedType}');\r\n\t\t\t`;
+            logic += `}\r\n\t\t`;
+            if(column.Default == null){
+                logic += `}\r\n\t\t`;
+                logic += `else {\r\n\t\t\t`;
+                switch (parsedType) {
+                    case "string":
+                        logic += `data.${column.Field} = "";\r\n\t\t\t`;
+                        logic += `const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split("");\r\n\t\t\t`;
+                        logic += `for (let i = 0; i < 25; i++) {\r\n\t\t\t\t`;
+                        logic += `data.${column.Field} += chars[Math.round(Math.random() * chars.length)];\r\n\t\t\t`;
+                        logic += `}\r\n\t\t` 
+                        break;
+                    case "number":
+                        logic += `data.${column.Field} = Math.round(Math.random() * 255);\r\n\t\t`;
+                        break;
+                    case "boolean":
+                        logic += `data.${column.Field} = Math.round(Math.random());\r\n\t\t`;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            logic += `}\r\n\t\t`
+        });
+        comment = comment.substr(0, comment.lastIndexOf("\r\n\t"));
+        logic = logic.substr(0, logic.lastIndexOf("\r\n\t\t"));
+        fs.writeFileSync(`./Seeders/${tableName}.js`, fs.readFileSync('Templates/SeederTemplate.txt', 'utf-8').replace(/{{seeder}}/g, tableName).replace(/{{logic}}/g, logic).replace(/{{comment}}/g, comment).replace(/{{table}}/g, table));
         doneTables++
         if(doneTables == tables.length){
-            Logger.Log("Finished creating seeders")
-            console.log("Successfully created seeders!")
             process.exit()
         }
-    })
-}
-
-function firstCharToUpper(string){
-    return string[0].toUpperCase() + string.slice(1)
+    });
 }

@@ -1,34 +1,42 @@
-require('dotenv').config({
-    path: '../.env'
-})
-const fs = require('fs')
-const MySQL = require('../Core/MySQL')
-const Logger = require('./Logger')
+require('dotenv').config({path: '../.env'});
+const MySQL = require("../Core/MySQL");
+const fs = require('fs');
+const pluralize = require('pluralize');
+const Utils = require("../Core/Utils");
 
-CreateModels()
+run()
 
-async function CreateModels(){
-    Logger.Start("Started creating models")
-    fs.rmSync('./Models/', {recursive: true, force: true})
-    fs.mkdirSync('./Models')
-    await MySQL.Query(`USE ${process.env.DB}`)
-    let tables = await MySQL.Query(`SELECT table_name AS name FROM information_schema.tables WHERE table_schema = '${process.env.DB}'`)
+async function run(){
+    await MySQL.use(process.env.DB)
+    let tables = await MySQL.Query(`SHOW TABLES`);
     let doneTables = 0
     tables.map(async table => {
-        const fileName = `${firstCharToUpper(table.name)}Model.js`
-        Logger.Log(`Started creating model ${fileName}`)
-        const path = `./Models/${fileName}`
-        fs.writeFileSync(path, `const Model = require('../../Core/Model')\r\n\r\nmodule.exports = class ${firstCharToUpper(table.name)}Model extends Model {\r\n\tstatic table = '${table.name}'\r\n\tconstructor(){\r\n\t\tsuper()\r\n\t}\r\n}`)
-        Logger.Log(`Finished creating model ${fileName}`)
+        table = table[`Tables_in_${process.env.DB}`];
+        let tableName = Utils.firstCharToUpperPerWord(table);
+        let customObject = `/**\r\n`;
+        let customObjectName = `${pluralize.singular(tableName)}Object`
+        customObject += ` * @typedef {Object} ${pluralize.singular(tableName)}Object\r\n`;
+        let columns = await MySQL.Query(`SHOW COLUMNS FROM ${table}`);
+        columns.map(column => {
+            let parsedType = "";
+            if(column.Type.includes("int")){
+                parsedType = "number";
+            }
+            if(column.Type.includes("varchar") || column.Type.includes("text") || column.Type.includes("blob")){
+                parsedType = "string";
+            }
+            if(column.Type.includes("datetime") || column.Type.includes("timestamp")){
+                parsedType = "Date";
+            }
+            customObject += ` * @property {${parsedType}} ${column.Field}\r\n`;
+        });
+        customObject += ` */`;
+        fs.writeFileSync(`./Models/${pluralize.singular(tableName)}.js`, fs.readFileSync('./Templates/ModelTemplate.txt', 'utf-8').replace(/{{table}}/g, table).replace(/{{model}}/g, pluralize.singular(tableName)).replace(/{{customObject}}/g, customObject).replace(/{{customObjectName}}/g, customObjectName));
         doneTables++
         if(doneTables == tables.length){
-            Logger.Log("Finished creating models")
-            console.log("Successfully created models!")
             process.exit()
         }
-    })
+    });
+    
 }
 
-function firstCharToUpper(string){
-    return string[0].toUpperCase() + string.slice(1)
-}
