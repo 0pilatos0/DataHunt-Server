@@ -10,42 +10,42 @@ module.exports = class Users_Achievement extends Model {
     /**
      * @returns {Users_AchievementObject}
      */
-    static async Find({select = [], where = {}, orderBy}){
-        return super.Find({select, where, orderBy});
+    static async Find({select, where, orderBy, joins} = {}){
+        return super.Find({select, where, orderBy, joins});
     }
 
     /**
      * @returns {Users_AchievementObject}
      */
-    static async FindId({select = [], where = {}, orderBy}){
-        return super.FindId({select, where, orderBy});
+    static async FindId({select, where, orderBy, joins} = {}){
+        return super.FindId({select, where, orderBy, joins});
     }
 
     /**
      * @returns {Array.<Users_AchievementObject>}
      */
-    static async Select({select = [], where = {}, orderBy, limit, joins = []}){
+    static async Select({select, where, orderBy, limit, joins} = {}){
         return super.Select({select, where, orderBy, limit, joins});
     }
 
     /**
      * @returns {Boolean}
      */
-    static async Create({create = {}}){
+    static async Create({create} = {}){
         return super.Create({create});
     }
 
     /**
      * @returns {Boolean}
      */
-    static async Update({where = {}, set = {}}){
+    static async Update({where, set} = {}){
         return super.Update({where, set});
     }
 
     /**
      * @returns {Boolean}
      */
-    static async Delete({where = {}}){
+    static async Delete({where} = {}){
         return super.Delete({where});
     }
 
@@ -74,7 +74,7 @@ module.exports = class Users_Achievement extends Model {
 /**
  * @typedef {Object} Users_AchievementObject
  * @property {number} id
- * @property {number} character_id
+ * @property {number} user_id
  * @property {number} achievement_id
  * @property {number} progress_value
  * @property {number} required_value

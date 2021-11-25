@@ -1,3 +1,4 @@
+require('dotenv').config({path: "../.env"})
 const MySQL = require("../Core/MySQL");
 const fs = require('fs');
 const pluralize = require('pluralize');
@@ -8,6 +9,7 @@ run()
 async function run(){
     await MySQL.use(process.env.DB)
     let tables = await MySQL.Query(`SHOW TABLES`);
+    let doneTables = 0
     tables.map(async table => {
         table = table[`Tables_in_${process.env.DB}`];
         let tableName = firstCharToUpperPerWord(table);
@@ -17,11 +19,17 @@ async function run(){
         columns.map(column => {
             if(column.Extra == "auto_increment" || column.Extra.includes("DEFAULT_GENERATED") || column.Default == "current_timestamp()") return;
             let parsedType = "";
-            if(column.Type.includes("int")){
+            if(column.Type.includes("tinyint")){
+                parsedType = "boolean";
+            }
+            else if(column.Type.includes("int")){
                 parsedType = "number";
             }
             if(column.Type.includes("varchar") || column.Type.includes("text") || column.Type.includes("blob")){
                 parsedType = "string";
+            }
+            if(column.Type.includes("datetime") || column.Type.includes("timestamp")){
+                parsedType = "Date"
             }
             comment += ` * @param {${parsedType}} data.${column.Field} ${firstCharToUpperPerWord(column.Field)}\r\n\t`;
             logic += `if(typeof data.${column.Field} != "undefined"){\r\n\t\t\t`;
@@ -54,5 +62,9 @@ async function run(){
         comment = comment.substr(0, comment.lastIndexOf("\r\n\t"));
         logic = logic.substr(0, logic.lastIndexOf("\r\n\t\t"));
         fs.writeFileSync(`./Seeders/${tableName}.js`, fs.readFileSync('Templates/SeederTemplate.txt', 'utf-8').replace(/{{seeder}}/g, tableName).replace(/{{logic}}/g, logic).replace(/{{comment}}/g, comment).replace(/{{table}}/g, table));
+        doneTables++
+        if(doneTables == tables.length){
+            process.exit()
+        }
     });
 }

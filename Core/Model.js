@@ -13,10 +13,10 @@ module.exports = class Model{
             where = whereData.where
             values = values.concat(whereData.values)
         }
-        return MySQL.Query(`SELECT ${select.length > 0 ? select.join(", ") : '*'} FROM ${this.table} ${joins ? joins.join(' ') : ''}${where ? ` WHERE ${where}` : ''}${orderBy ? ` ${orderBy.toUpperCase()}` : ''}${limit ? ` LIMIT ${limit}` : ''}`, values)
+        return MySQL.Query(`SELECT ${select?.length > 0 ? select.join(", ") : '*'} FROM ${this.table} ${joins ? joins.join(' ') : ''}${where ? ` WHERE ${where}` : ''}${orderBy ? ` ${orderBy.toUpperCase()}` : ''}${limit ? ` LIMIT ${limit}` : ''}`, values)
     }
 
-    static async Delete({where = {}}){
+    static async Delete({where}){
         let values = []
         if(where){
             let whereData = this.ParseWhereObject(where)
@@ -26,7 +26,7 @@ module.exports = class Model{
         return MySQL.Query(`DELETE FROM ${this.table}${where ? ` WHERE ${where}` : ''}`, values)
     }
 
-    static async Update({set = {}, where = {}}){
+    static async Update({set, where}){
         let values = []
         let setData = this.ParseSetObject(set)
         set = setData.set
@@ -37,7 +37,7 @@ module.exports = class Model{
         return MySQL.Query(`UPDATE ${this.table} SET ${set}${where ? ` WHERE ${where}` : ''}`, values)
     }
 
-    static async Create({create = {}}){
+    static async Create({create}){
         let values = []
         let createData = this.ParseCreateObject(create)
         values = values.concat(createData.values)
@@ -48,7 +48,7 @@ module.exports = class Model{
         return await this.Select()
     }
 
-    static async First({where = {}, select = []}){
+    static async First({where, select}){
         let first = await this.Select({
             limit: 1,
             where,
@@ -58,7 +58,7 @@ module.exports = class Model{
         else return false
     }
 
-    static async Last({where = {}, select = []}){
+    static async Last({where, select}){
         let last = await this.Select({
             limit: 1,
             where,
@@ -69,7 +69,7 @@ module.exports = class Model{
         else return false
     }
 
-    static async Find({where = {}, joins = [], select = []}){
+    static async Find({where, joins, select}){
         let data = await this.Select({
             where, 
             joins,
@@ -79,7 +79,7 @@ module.exports = class Model{
         else return false
     }
 
-    static async FindId({where = {}, joins = []}){
+    static async FindId({where, joins}){
         let data = await this.Select({
             where,
             joins,

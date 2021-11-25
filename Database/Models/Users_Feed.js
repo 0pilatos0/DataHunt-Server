@@ -10,42 +10,42 @@ module.exports = class Users_Feed extends Model {
     /**
      * @returns {Users_FeedObject}
      */
-    static async Find({select = [], where = {}, orderBy}){
-        return super.Find({select, where, orderBy});
+    static async Find({select, where, orderBy, joins} = {}){
+        return super.Find({select, where, orderBy, joins});
     }
 
     /**
      * @returns {Users_FeedObject}
      */
-    static async FindId({select = [], where = {}, orderBy}){
-        return super.FindId({select, where, orderBy});
+    static async FindId({select, where, orderBy, joins} = {}){
+        return super.FindId({select, where, orderBy, joins});
     }
 
     /**
      * @returns {Array.<Users_FeedObject>}
      */
-    static async Select({select = [], where = {}, orderBy, limit, joins = []}){
+    static async Select({select, where, orderBy, limit, joins} = {}){
         return super.Select({select, where, orderBy, limit, joins});
     }
 
     /**
      * @returns {Boolean}
      */
-    static async Create({create = {}}){
+    static async Create({create} = {}){
         return super.Create({create});
     }
 
     /**
      * @returns {Boolean}
      */
-    static async Update({where = {}, set = {}}){
+    static async Update({where, set} = {}){
         return super.Update({where, set});
     }
 
     /**
      * @returns {Boolean}
      */
-    static async Delete({where = {}}){
+    static async Delete({where} = {}){
         return super.Delete({where});
     }
 

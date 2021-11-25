@@ -11,7 +11,7 @@ module.exports = class Users_Bans extends Seeder{
      * @param {Object} data to seed table Users_Bans
 	 * @param {number} data.user_id User_Id
 	 * @param {number} data.banned_by Banned_By
-	 * @param {} data.until Until
+	 * @param {Date} data.until Until
      */
     static async Seed(data){
         if(typeof data.user_id != "undefined"){
@@ -31,8 +31,8 @@ module.exports = class Users_Bans extends Seeder{
 			data.banned_by = Math.round(Math.random() * 255);
 		}
 		if(typeof data.until != "undefined"){
-			if(typeof data.until !== ""){
-				throw new Error('until must be typeof ');
+			if(typeof data.until !== "Date"){
+				throw new Error('until must be typeof Date');
 			}
 		}
 		else {

@@ -13,8 +13,8 @@ module.exports = class Characters extends Seeder{
 	 * @param {number} data.user_id User_Id
 	 * @param {number} data.class_id Class_Id
 	 * @param {number} data.stats_id Stats_Id
-	 * @param {number} data.kills Kills
-	 * @param {number} data.deaths Deaths
+	 * @param {boolean} data.kills Kills
+	 * @param {string} data.deaths Deaths
 	 * @param {number} data.level Level
      */
     static async Seed(data){
@@ -55,20 +55,24 @@ module.exports = class Characters extends Seeder{
 			data.stats_id = Math.round(Math.random() * 255);
 		}
 		if(typeof data.kills != "undefined"){
-			if(typeof data.kills !== "number"){
-				throw new Error('kills must be typeof number');
+			if(typeof data.kills !== "boolean"){
+				throw new Error('kills must be typeof boolean');
 			}
 		}
 		else {
-			data.kills = Math.round(Math.random() * 255);
+			data.kills = Math.round(Math.random());
 		}
 		if(typeof data.deaths != "undefined"){
-			if(typeof data.deaths !== "number"){
-				throw new Error('deaths must be typeof number');
+			if(typeof data.deaths !== "string"){
+				throw new Error('deaths must be typeof string');
 			}
 		}
 		else {
-			data.deaths = Math.round(Math.random() * 255);
+			data.deaths = "";
+			const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split("");
+			for (let i = 0; i < 25; i++) {
+				data.deaths += chars[Math.round(Math.random() * chars.length)];
+			}
 		}
 		if(typeof data.level != "undefined"){
 			if(typeof data.level !== "number"){

@@ -1,5 +1,4 @@
 const mysql = require('mysql')
-require('dotenv').config({path:'../.env'})
 
 let con = mysql.createConnection({
     host: process.env.DBHOST,

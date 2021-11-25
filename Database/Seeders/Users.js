@@ -13,10 +13,10 @@ module.exports = class Users extends Seeder{
 	 * @param {string} data.username Username
 	 * @param {string} data.email Email
 	 * @param {string} data.password Password
-	 * @param {number} data.enabled Enabled
+	 * @param {boolean} data.enabled Enabled
 	 * @param {string} data.resetpassword Resetpassword
 	 * @param {string} data.verifytoken Verifytoken
-	 * @param {number} data.verified Verified
+	 * @param {boolean} data.verified Verified
 	 * @param {string} data.resettoken Resettoken
      */
     static async Seed(data){
@@ -69,8 +69,8 @@ module.exports = class Users extends Seeder{
 			}
 		}
 		if(typeof data.enabled != "undefined"){
-			if(typeof data.enabled !== "number"){
-				throw new Error('enabled must be typeof number');
+			if(typeof data.enabled !== "boolean"){
+				throw new Error('enabled must be typeof boolean');
 			}
 		}
 		if(typeof data.resetpassword != "undefined"){
@@ -98,8 +98,8 @@ module.exports = class Users extends Seeder{
 			}
 		}
 		if(typeof data.verified != "undefined"){
-			if(typeof data.verified !== "number"){
-				throw new Error('verified must be typeof number');
+			if(typeof data.verified !== "boolean"){
+				throw new Error('verified must be typeof boolean');
 			}
 		}
 		if(typeof data.resettoken != "undefined"){

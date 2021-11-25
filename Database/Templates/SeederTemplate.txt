@@ -1,0 +1,17 @@
+const Seeder = require("../../Core/Seeder");
+
+module.exports = class {{seeder}} extends Seeder{
+    static tableName = "{{table}}";
+
+    constructor(){
+        super();
+    }
+
+    /**
+    {{comment}}
+     */
+    static async Seed(data){
+        {{logic}};
+        await super.Seed(data);
+    }
+}

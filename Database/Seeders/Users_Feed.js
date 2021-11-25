@@ -11,6 +11,7 @@ module.exports = class Users_Feed extends Seeder{
      * @param {Object} data to seed table Users_Feed
 	 * @param {number} data.user_id User_Id
 	 * @param {string} data.message Message
+	 * @param {Date} data.time Time
      */
     static async Seed(data){
         if(typeof data.user_id != "undefined"){
@@ -32,7 +33,14 @@ module.exports = class Users_Feed extends Seeder{
 			for (let i = 0; i < 25; i++) {
 				data.message += chars[Math.round(Math.random() * chars.length)];
 			}
-		};
+		}
+		if(typeof data.time != "undefined"){
+			if(typeof data.time !== "Date"){
+				throw new Error('time must be typeof Date');
+			}
+		}
+		else {
+			};
         await super.Seed(data);
     }
 }

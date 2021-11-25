@@ -1,28 +1,28 @@
 const Model = require("../../Core/Model");
 
-module.exports = class Level extends Model {
-    static table = "level";
+module.exports = class {{model}} extends Model {
+    static table = "{{table}}";
 
     constructor(){
         super();
     }
 
     /**
-     * @returns {LevelObject}
+     * @returns {{{customObjectName}}}
      */
     static async Find({select, where, orderBy, joins} = {}){
         return super.Find({select, where, orderBy, joins});
     }
 
     /**
-     * @returns {LevelObject}
+     * @returns {{{customObjectName}}}
      */
     static async FindId({select, where, orderBy, joins} = {}){
         return super.FindId({select, where, orderBy, joins});
     }
 
     /**
-     * @returns {Array.<LevelObject>}
+     * @returns {Array.<{{customObjectName}}>}
      */
     static async Select({select, where, orderBy, limit, joins} = {}){
         return super.Select({select, where, orderBy, limit, joins});
@@ -50,38 +50,25 @@ module.exports = class Level extends Model {
     }
 
     /**
-     * @returns {Array.<LevelObject>}
+     * @returns {Array.<{{customObjectName}}>}
      */
     static async All(){
         return super.All();
     }
 
     /**
-     * @returns {LevelObject}
+     * @returns {{{customObjectName}}}
      */
     static async First({}){
         return super.First({});
     }
 
     /**
-     * @returns {LevelObject}
+     * @returns {{{customObjectName}}}
      */
     static async Last({}){
         return super.Last({});
     }
 }
 
-/**
- * @typedef {Object} LevelObject
- * @property {number} id
- * @property {number} user_id
- * @property {number} money
- * @property {number} exp
- * @property {number} level
- * @property {number} health
- * @property {number} attack
- * @property {number} speed
- * @property {number} defense
- * @property {Date} created_at
- * @property {Date} updated_at
- */
+{{customObject}}

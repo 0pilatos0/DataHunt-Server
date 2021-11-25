@@ -7,8 +7,9 @@ const Utils = require("../Core/Utils");
 run()
 
 async function run(){
-    // MySQL.connect(process.env.DB);
+    await MySQL.use(process.env.DB)
     let tables = await MySQL.Query(`SHOW TABLES`);
+    let doneTables = 0
     tables.map(async table => {
         table = table[`Tables_in_${process.env.DB}`];
         let tableName = Utils.firstCharToUpperPerWord(table);
@@ -31,6 +32,11 @@ async function run(){
         });
         customObject += ` */`;
         fs.writeFileSync(`./Models/${pluralize.singular(tableName)}.js`, fs.readFileSync('./Templates/ModelTemplate.txt', 'utf-8').replace(/{{table}}/g, table).replace(/{{model}}/g, pluralize.singular(tableName)).replace(/{{customObject}}/g, customObject).replace(/{{customObjectName}}/g, customObjectName));
+        doneTables++
+        if(doneTables == tables.length){
+            process.exit()
+        }
     });
+    
 }
 
