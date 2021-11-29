@@ -26,20 +26,24 @@ module.exports = class Server{
             
             socket.use((packet, next) => {
                 let data = packet[1]
-                if(typeof data !== "undefined"){
-                    switch (typeof data) {
-                        case "string":
-                            data = data.replace(/['"`<>\\{}]/g, '')
-                            break;
-                        case "object":
-                            Object.values(data).map(value => {
-                                data[Object.keys(data)[Object.values(data).indexOf(value)]] = value.replace(/['"`<>\\{}]/g, '')
-                            })
-                            break;
-                        default:
-                            break;
+                let replaceData = function(data){
+                    if(typeof data !== "undefined"){
+                        switch (typeof data) {
+                            case "string":
+                                data = data.replace(/['"`<>\\{}]/g, '')
+                                break;
+                            case "object":
+                                Object.values(data).map(value => {
+                                    data[Object.keys(data)[Object.values(data).indexOf(value)]] = replaceData(value)
+                                })
+                                break;
+                            default:
+                                break;
+                        }
                     }
+                    return data
                 }
+                data = replaceData(data)
                 packet[1] = data
                 next()
             })
