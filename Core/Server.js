@@ -23,6 +23,26 @@ module.exports = class Server{
 
         this.#io.on('connection', (socket) => {
             console.log(`+${socket.id}`)
+            
+            socket.use((packet, next) => {
+                let data = packet[1]
+                if(typeof data !== "undefined"){
+                    switch (typeof data) {
+                        case "string":
+                            data = data.replace(/['"`<>\\{}]/g, '')
+                            break;
+                        case "object":
+                            Object.values(data).map(value => {
+                                data[Object.keys(data)[Object.values(data).indexOf(value)]] = value.replace(/['"`<>\\{}]/g, '')
+                            })
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                packet[1] = data
+                next()
+            })
 
             HandleUser(socket)
             HandleItem(socket)
