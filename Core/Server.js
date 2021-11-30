@@ -16,6 +16,10 @@ module.exports = class Server{
     })
     #mysql = new MySQL()
 
+    /**
+     * Fetches the server instance
+     * @returns {null}
+     */
     constructor() {
         this.#http.listen(3000, () => {
             console.log(`Server listening on http://localhost:${this.#http.address().port}`)
