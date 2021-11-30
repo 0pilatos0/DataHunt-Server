@@ -70,7 +70,7 @@ module.exports = function HandleUser(socket){
         }
         if(data.email != null){
             if(!Regex.Email.test(data.email)){
-                errors.push(`Email must contain an '@' and must end on an extension`)
+                errors.push(`Email must contain an '@' and must end on an extension for example @datahunt.nl`)
             }
         }
         else{
@@ -149,7 +149,7 @@ module.exports = function HandleUser(socket){
         let success = []
         if(data.email != null){
             if(!Regex.Email.test(data.email)){
-                errors.push(`Email must contain an '@' and must end on an extension`)
+                errors.push(`Email must contain an '@' and must end on an extension for example @datahunt.nl`)
             }
         }
         let existingUser = await User.FindId({
