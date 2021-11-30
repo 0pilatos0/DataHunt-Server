@@ -6,8 +6,9 @@ module.exports = class Salter {
     }
 
     /**
-     Generates a random token and returns a string
-    **/
+    * Generates a random token and returns a string
+    * @returns {String}
+    */
     static GenerateRandomToken(){
         return bcrypt.hashSync(Math.floor(Math.random() * 1000000).toString(), 12)
     }
@@ -15,6 +16,7 @@ module.exports = class Salter {
     /**
      Hashes the password from string and returns hashedpassword as string
      @param {String} password
+     @returns {String}
     **/
     static HashPassword(password){
         return bcrypt.hashSync(password, 12)
@@ -24,6 +26,7 @@ module.exports = class Salter {
      Verifies the string password and hashed password and return boolean
      @param {String} password
      @param {String} hashedPassword the already hashed password from database
+     @returns {Boolean}
     **/
     static VerifyPassword(password, hashedPassword){
         return bcrypt.compareSync(password, hashedPassword)

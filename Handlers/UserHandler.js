@@ -2,7 +2,7 @@ const Mailer = require("../Core/Mailer")
 const Regex = require("../Core/Regex")
 const Salter = require("../Core/Salter")
 const HTMLLoader = require("../Loaders/HTMLLoader")
-const UsersModel = require('../Database/Models/UsersModel.js')
+const User = require('../Database/Models/User.js')
 
 module.exports = function HandleUser(socket){
     socket.on('login', async (data) => {
@@ -16,7 +16,7 @@ module.exports = function HandleUser(socket){
         if(!data.password){
             errors.push('Password must be filled in')
         }
-        let user = await UsersModel.Find({
+        let user = await User.Find({
             where:{
                 email: data.email
             }
@@ -70,7 +70,7 @@ module.exports = function HandleUser(socket){
         }
         if(data.email != null){
             if(!Regex.Email.test(data.email)){
-                errors.push(`Email must contain an '@'`)
+                errors.push(`Email must contain an '@' and must end on an extension for example @datahunt.nl`)
             }
         }
         else{
@@ -94,35 +94,44 @@ module.exports = function HandleUser(socket){
         }
         if(errors.length == 0){
             let verifyToken = Salter.GenerateRandomToken()
-            let existingUser = await UsersModel.FindId({
+            let existingUser = await User.FindId({
                 where: {
-                    username: data.username,
-                    email: data.email
+                    username: data.username
                 }
             })
-            if(existingUser == false){
-                let createdUser = await UsersModel.Create({
-                    create:{
-                        name: data.name,
-                        username: data.username,
-                        email: data.email,
-                        password: Salter.HashPassword(data.password),
-                        verifyToken: verifyToken
+            if(existingUser !== false){
+                errors.push("Account with that username already exists")
+            }
+            if(errors.length == 0){
+                existingUser = await User.FindId({
+                    where: {
+                        email: data.email
                     }
                 })
-                //console.log(createdUser)
-                let htmlData = HTMLLoader.Read("./Mail/activationMail.html")
-                htmlData = htmlData.replace('{{url}}', `http://${process.env.WEBSITEHOST}:${process.env.WEBSITEPORT}/verify?token=${verifyToken}`)
-                htmlData = htmlData.replace('{{username}}', data.username)
-                let mailState = await Mailer.SendMail({
-                    to: data.email,
-                    subject: 'DataHunt user registration',
-                    html: htmlData
-                })
-                success.push("You now received an email with a verification link to verify your account")
-            }
-            else{
-                errors.push("Account with that email or username already exists")
+                if(existingUser == false){
+                    let createdUser = await User.Create({
+                        create:{
+                            name: data.name,
+                            username: data.username,
+                            email: data.email,
+                            password: Salter.HashPassword(data.password),
+                            verifyToken: verifyToken
+                        }
+                    })
+                    //console.log(createdUser)
+                    let htmlData = HTMLLoader.Read("./Mail/activationMail.html")
+                    htmlData = htmlData.replace('{{url}}', `http://${process.env.WEBSITEHOST}:${process.env.WEBSITEPORT}/verify?token=${verifyToken}`)
+                    htmlData = htmlData.replace('{{username}}', data.username)
+                    let mailState = await Mailer.SendMail({
+                        to: data.email,
+                        subject: 'DataHunt user registration',
+                        html: htmlData
+                    })
+                    success.push("You now received an email with a verification link to verify your account")
+                }
+                else{
+                    errors.push("Account with that email already exists")
+                }
             }
         }
         socket.emit('register', {
@@ -140,17 +149,17 @@ module.exports = function HandleUser(socket){
         let success = []
         if(data.email != null){
             if(!Regex.Email.test(data.email)){
-                errors.push(`Email must contain an '@'`)
+                errors.push(`Email must contain an '@' and must end on an extension for example @datahunt.nl`)
             }
         }
-        let existingUser = await UsersModel.FindId({
+        let existingUser = await User.FindId({
             where: {
                 email: data.email
             }
         })
         //console.log(existingUser)
         if(existingUser){
-            let verified = await UsersModel.Find({
+            let verified = await User.Find({
                 where: {
                     email: data.email,
                     verified: 1
@@ -158,14 +167,14 @@ module.exports = function HandleUser(socket){
             })
             //console.log(verified)
             if(verified != false){
-                let user = await UsersModel.Find({
+                let user = await User.Find({
                     where: {
                         email: data.email
                     }
                 })
                 if(user.resettoken == null){
                     let token = Salter.GenerateRandomToken()  
-                    await UsersModel.Update({
+                    await User.Update({
                         where: {
                             email: data.email
                         },
