@@ -3,6 +3,7 @@ const io = require('socket.io')
 const MySQL = require('./MySQL')
 const HandleUser = require('../Handlers/UserHandler')
 const HandleItem = require('../Handlers/ItemHandler')
+const HandleMap = require('../Handlers/MapHandler')
 
 module.exports = class Server{
     #http = http.createServer()
@@ -15,6 +16,7 @@ module.exports = class Server{
         }
     })
     #mysql = new MySQL()
+    map = []
 
     /**
      * Fetches the server instance
@@ -54,6 +56,7 @@ module.exports = class Server{
 
             HandleUser(socket)
             HandleItem(socket)
+            HandleMap(socket)
 
             socket.on('disconnect', () => {
                 console.log(`-${socket.id}`)
