@@ -8,8 +8,8 @@ const HandleMap = require('../Handlers/MapHandler')
 module.exports = class Server{
     #http = http.createServer()
     #io = io().attach(this.#http, {
-        pingInterval: 10000,
-        pingTimeout: 5000,
+        pingInterval: 60000,
+        pingTimeout: 60000,
         cookie: false,
         cors: {
             origin: '*'
