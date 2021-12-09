@@ -48,6 +48,8 @@ module.exports = class Map {
                                 l.objects.forEach(object => {
                                     let gameObject = new GameObject(new Vector2(object.x * spriteScaleFactor, object.y * spriteScaleFactor));
                                     gameObject.type = object.type
+                                    gameObject.size = new Vector2(16 * spriteScaleFactor, 16 * spriteScaleFactor)
+                                    gameObject.scale = new Vector2(1, 1)
                                     map.push(gameObject)
                                 });
                                 break;
@@ -59,6 +61,8 @@ module.exports = class Map {
                                             let tilePos = new Vector2(x * 16 * spriteScaleFactor, y * 16 * spriteScaleFactor)
                                             let tileSize = new Vector2(16 * spriteScaleFactor, 16 * spriteScaleFactor)
                                             let gameObject = new GameObject(tilePos)
+                                            gameObject.size = tileSize
+                                            gameObject.scale = new Vector2(1, 1)
                                             gameObject.tileIndex = tileIndex
                                             // gameObject.type = tile.type
                                             map.push(gameObject)
