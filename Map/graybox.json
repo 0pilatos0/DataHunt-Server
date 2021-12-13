@@ -116,7 +116,7 @@
         }, 
         {
          "firstgid":782,
-         "source":"..\/..\/DataHunt-Game\/Map\/Floors\/GroundTiles01.json"
+         "source":"Floors\/GroundTiles01.json"
         }],
  "tilewidth":16,
  "type":"map",
