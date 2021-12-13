@@ -11,6 +11,7 @@ module.exports = class Characters extends Table{
             user_id: "INT NN",
             class_id: "INT NN",
             stats_id: "INT NN",
+            sprite: "JSON",
             kills: "INT NN",
             deaths: "INT NN",
             level: "INT NN"
