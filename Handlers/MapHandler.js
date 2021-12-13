@@ -29,6 +29,7 @@ module.exports = function HandleMap(socket){
     socket.on('resize', (data) => {
         let s = global.sockets[socket.id]
         s.camera.size = new Vector2(data.size.X, data.size.Y)
+        s.camera.position = new Vector2(s.player.position.x - s.camera.size.x / 2, s.player.position.y - s.camera.size.y / 2)
     })
 
     socket.on('map', async (data) => {
@@ -65,6 +66,8 @@ setInterval(() => {
 }, 1000/30);
 
 function isInRange(gameObject, socket){
+    if(gameObject == undefined) return
+    if(gameObject.position == undefined) return
     if(gameObject.position.x + gameObject.size.x * gameObject.scale.x >= socket.camera.position.x &&
         gameObject.position.x < socket.camera.position.x + socket.camera.size.x * socket.camera.scale.x &&
         gameObject.position.y + gameObject.size.y * gameObject.scale.y >= socket.camera.position.y &&
