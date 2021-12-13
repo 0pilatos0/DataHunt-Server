@@ -10,24 +10,32 @@ const Vector2 = require("../Core/Vector2")
 module.exports = function HandlePlayer(socket){
     socket.on('movement', async (data) => {
         let s = global.sockets[socket.id]
-        switch (data) {
-            case "forward":
-                s.position.y += 10
-                break;
-            case "backward":
-                s.position.y -= 10
-                break;
-            case "left":
-                s.position.x -= 10
-                break;
-            case "right":
-                s.position.x += 10
-                break;
-            default:
-                break;
+        if(data.forward){
+            s.player.position.y -= 10
         }
-        s.view.position = s.position
-        // console.log(s.view)
-        // global.sockets[socket.id].position +=
+        if(data.backward){
+            s.player.position.y += 10
+        }
+        if(data.left){
+            s.player.position.x -= 10
+        }
+        if(data.right){
+            s.player.position.x += 10
+        }
+        let tPosition = new Vector2(0, 0)
+        if(s.player.position.x <= s.camera.size.x / 2){
+            tPosition.x = 0
+        }
+        else{
+            tPosition.x = s.player.position.x - s.camera.size.x / 2
+        }
+        if(s.player.position.y <= s.camera.size.y / 2){
+            tPosition.y = 0
+        }
+        //TODO add based on map size
+        else{
+            tPosition.y = s.player.position.y - s.camera.size.y / 2
+        }
+        s.camera.position = tPosition
     })
 }

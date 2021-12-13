@@ -7,73 +7,69 @@ const JSONLoader = require("../Core/Loaders/JSONLoader")
 const Map = require("../Map/Map")
 const Vector2 = require("../Core/Vector2")
 const GameObject = require("../Core/GameObject")
+const Player = require("../Elements/Player")
 
 let tilesets = undefined
 let map = undefined
-// global.sockets = {}
 
 module.exports = function HandleMap(socket){
     socket.on('tilesets', async (data) => {
         if(tilesets === undefined){
             tilesets = await Map.Load(`${__dirname}/../Map/graybox.json`)
         }
-        console.log("Received request for map")
-        console.time("pizza")
-        console.timeEnd("pizza")
-        console.log("Map loaded")
         socket.emit('tilesets', tilesets)
-        console.log("viewwidth and viewheight client")
         Object.keys(data).map(key => {
             let value = data[key]
             data[key] = new Vector2(value.X, value.Y)
         })
-        global.sockets[socket.id].view = data
+        global.sockets[socket.id].camera = data
+        global.sockets[socket.id].player = new Player()
     })
 
     socket.on('resize', (data) => {
-        
-        global.sockets[socket.id].view = data
+        let s = global.sockets[socket.id]
+        s.camera.size = new Vector2(data.size.X, data.size.Y)
     })
 
     socket.on('map', async (data) => {
         if(map === undefined){
             map = Map.map
         }
-        let s = sockets[socket.id]
-        let tMap = []
-        map.map(gameObject => {
-            if(gameObject.position.x + gameObject.size.x * gameObject.scale.x >= s.view.position.x &&
-                gameObject.position.x < s.view.position.x + s.view.size.x * s.view.scale.x &&
-                gameObject.position.y + gameObject.size.y * gameObject.scale.y >= s.view.position.y &&
-                gameObject.position.y < s.view.position.y + s.view.size.y * s.view.scale.y){
-                tMap.push(gameObject)
+        let s = global.sockets[socket.id]
+        map.find(gameObject => {
+            if(gameObject.type == "SpawnPoint"){
+                s.player.position = new Vector2(gameObject.position.x + s.camera.size.x / 2, gameObject.position.y + s.camera.size.y / 2)
+                s.camera.position = gameObject.position
             }
         })
-        
-        socket.emit('map', tMap)
     })
-
-    // setInterval(() => {
-        // 
-        
-    // }, 1000);
 }
 
 setInterval(() => {
     if(map == undefined) return
     Object.values(global.sockets).forEach(socket => {
+        if(!socket.camera) return
         let tMap = []
         map.map(gameObject => {
-            if(gameObject.position.x + gameObject.size.x * gameObject.scale.x >= socket.view.position.x &&
-                gameObject.position.x < socket.view.position.x + socket.view.size.x * socket.view.scale.x &&
-                gameObject.position.y + gameObject.size.y * gameObject.scale.y >= socket.view.position.y &&
-                gameObject.position.y < socket.view.position.y + socket.view.size.y * socket.view.scale.y){
-                    let tObject = gameObject
-                    tObject.position = new Vector2(gameObject.position.x - socket.view.position.x, gameObject.position.y - socket.view.position.y)
-                    // console.log(tObject.position)
-                    tMap.push(tObject)
+            if(isInRange(gameObject, socket)){
+                tMap.push(gameObject)
             }
         })
-        socket.socket.emit('map', tMap)
+        Player.players.map(player => {
+            if(isInRange(player, socket)){
+                tMap.push(player)
+            }
+        })
+        socket.socket.emit('map', {camera:socket.camera, map:tMap})
     })
 }, 1000/30);
+
+function isInRange(gameObject, socket){
+    if(gameObject.position.x + gameObject.size.x * gameObject.scale.x >= socket.camera.position.x &&
+        gameObject.position.x < socket.camera.position.x + socket.camera.size.x * socket.camera.scale.x &&
+        gameObject.position.y + gameObject.size.y * gameObject.scale.y >= socket.camera.position.y &&
+        gameObject.position.y < socket.camera.position.y + socket.camera.size.y * socket.camera.scale.y){
+        return true
+    }
+    return false
+}
