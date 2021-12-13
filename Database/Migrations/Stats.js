@@ -7,7 +7,7 @@ module.exports = class Stats extends Table{
 
     static async Migrate(){
         await this.create('stats', {
-            user_id: "INT NN",
+            character_id: "INT NN",
             money: "INT NN",
             exp: "INT NN",
             level: "INT NN",
