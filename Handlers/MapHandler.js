@@ -63,7 +63,7 @@ setInterval(() => {
         })
         socket.socket.emit('map', {camera:socket.camera, map:tMap})
     })
-}, 1000/30);
+}, 1000/20); //30
 
 function isInRange(gameObject, socket){
     if(gameObject == undefined) return
