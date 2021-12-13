@@ -4,6 +4,10 @@ const MySQL = require('./MySQL')
 const HandleUser = require('../Handlers/UserHandler')
 const HandleItem = require('../Handlers/ItemHandler')
 const HandleMap = require('../Handlers/MapHandler')
+const HandlePlayer = require('../Handlers/PlayerHandler')
+const Vector2 = require('../Core/Vector2')
+
+global.sockets = {}
 
 module.exports = class Server{
     #http = http.createServer()
@@ -29,7 +33,8 @@ module.exports = class Server{
 
         this.#io.on('connection', (socket) => {
             console.log(`+${socket.id}`)
-            
+            global.sockets[socket.id] = {socket}
+            global.sockets[socket.id].position = new Vector2(0,0)
             socket.use((packet, next) => {
                 let data = packet[1]
                 let replaceData = function(data){
@@ -57,6 +62,7 @@ module.exports = class Server{
             HandleUser(socket)
             HandleItem(socket)
             HandleMap(socket)
+            HandlePlayer(socket)
 
             socket.on('disconnect', () => {
                 console.log(`-${socket.id}`)
