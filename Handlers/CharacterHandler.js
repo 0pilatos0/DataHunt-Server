@@ -6,14 +6,11 @@ module.exports = function HandleItem(socket) {
     socket.on('saveNewCharacter', async (data) => {
         Object.entries(data).forEach(([key, value]) => {
             if (Number.isInteger(value) || key === 'name') {
-                console.log(`${key} : ${value}`)
             } else {
                 socket.emit("savedCharacter", 'error')
                 return
             }
         })
-
-        console.log(global.sockets[socket.id].username)
 
         let uid = await User.FindId({
             where: {
