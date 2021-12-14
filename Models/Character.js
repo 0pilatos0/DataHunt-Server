@@ -14,6 +14,14 @@ module.exports = class Character extends Model{
         })
     }
 
+    static async getAll(userID) {
+        return this.Select({
+            where: {
+                'user_id': userID
+            }
+        })
+    }
+
     static async TestInsert(uid, clid, username) {
         return this.Create({
             create: {

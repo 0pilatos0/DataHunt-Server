@@ -6,7 +6,7 @@ module.exports = class Seeder{
 
     }
 
-    static async Seed({tableName, amount = 1}){
+    static async Seed({tableName, amount = 1, }){
         SeederLogger.Log(`Started seeding ${tableName}`)
         for (let i = 0; i < amount; i++) {
             let data = await MySQL.Query(`SHOW COLUMNS FROM ${tableName}`)
