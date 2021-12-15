@@ -15,6 +15,11 @@ module.exports = class DiscordAPI{
         
     }
 
+    /**
+     * Sends message through discord api
+     * @param {String} message 
+     * @returns {null}
+     */
     static Send(message){
         const req = https.request(options, (res) => {})
         .on('error', (err) => {

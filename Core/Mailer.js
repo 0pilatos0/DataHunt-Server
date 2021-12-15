@@ -13,6 +13,13 @@ module.exports = class Mailer {
         
     }
 
+    /**
+     * @param {Object} data
+     * @param {String} data.to
+     * @param {String} data.subject
+     * @param {String} data.html 
+     * @returns {Promise}
+     */
     static async SendMail({to, subject, html}){
         return new Promise(async (resolve, reject) => {
             let from = process.env.GMAILUSER
