@@ -15,7 +15,7 @@ let map = undefined
 module.exports = function HandleMap(socket){
     socket.on('tilesets', async (data) => {
         if(tilesets === undefined){
-            tilesets = await Map.Load(`${__dirname}/../Map/graybox.json`)
+            tilesets = await Map.Load(`${__dirname}/../Map/map2.json`)
         }
         socket.emit('tilesets', tilesets)
         Object.keys(data).map(key => {
@@ -39,10 +39,11 @@ module.exports = function HandleMap(socket){
         let s = global.sockets[socket.id]
         map.find(gameObject => {
             if(gameObject.type == "SpawnPoint"){
-                s.player.position = new Vector2(gameObject.position.x + s.camera.size.x / 2, gameObject.position.y + s.camera.size.y / 2)
-                s.camera.position = gameObject.position
+                s.player.position = new Vector2(gameObject.position.x, gameObject.position.y)
+                s.camera.position = new Vector2(gameObject.position.x - s.camera.size.x / 2, gameObject.position.y - s.camera.size.y / 2)
             }
         })
+        socket.emit('map', {map, camera:s.camera})
     })
 }
 
@@ -50,20 +51,25 @@ setInterval(() => {
     if(map == undefined) return
     Object.values(global.sockets).forEach(socket => {
         if(!socket.camera) return
-        let tMap = []
-        map.map(gameObject => {
-            if(isInRange(gameObject, socket)){
-                tMap.push(gameObject)
-            }
-        })
+        // let tMap = []
+        // map.map(gameObject => {
+        //     if(isInRange(gameObject, socket)){
+        //         tMap.push(gameObject)
+        //     }
+        // })
+        let entities = []
         Player.players.map(player => {
             if(isInRange(player, socket)){
-                tMap.push(player)
+                entities.push(player)
+                // tMap.push(player)
             }
         })
-        socket.socket.emit('map', {camera:socket.camera, map:tMap})
+        // console.log(tMap.length)
+        // socket.socket.emit('map', {camera:socket.camera, map: tMap}) //entities
+        socket.socket.emit('entities', {camera:socket.camera, entities})
+        // socket.socket.emit('map', {camera:socket.camera, map:tMap})
     })
-}, 1000/20); //30
+}, 1000/30); //30
 
 function isInRange(gameObject, socket){
     if(gameObject == undefined) return

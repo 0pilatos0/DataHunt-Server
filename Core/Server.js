@@ -6,6 +6,7 @@ const HandleItem = require('../Handlers/ItemHandler')
 const HandleMap = require('../Handlers/MapHandler')
 const HandlePlayer = require('../Handlers/PlayerHandler')
 const Vector2 = require('../Core/Vector2')
+const Player = require('../Elements/Player')
 
 global.sockets = {}
 
@@ -65,6 +66,7 @@ module.exports = class Server{
 
             socket.on('disconnect', () => {
                 console.log(`-${socket.id}`)
+                delete Player.players[Player.players.indexOf(global.sockets[socket.id].player)]
                 delete global.sockets[socket.id]
             })
         })
