@@ -1,3 +1,4 @@
+require('dotenv').config({path: '../.env'});
 const Pi_Temps = require("./Seeders/Pi_Temps");
 const Achievements = require("./Seeders/Achievements");
 const Characters_Achievements = require("./Seeders/Characters_Achievements");

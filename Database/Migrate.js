@@ -1,3 +1,4 @@
+require('dotenv').config({path: '../.env'});
 const Pi_Temps = require("./Migrations/Pi_Temps");
 const Achievements = require("./Migrations/Achievements");
 const Characters_Achievements = require("./Migrations/Characters_Achievements");

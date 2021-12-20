@@ -7,6 +7,7 @@ const HandleMap = require('../Handlers/MapHandler')
 const HandlePlayer = require('../Handlers/PlayerHandler')
 const Vector2 = require('../Core/Vector2')
 const Player = require('../Elements/Player')
+const HandleCharacter = require('../Handlers/CharacterHandler')
 
 global.sockets = {}
 
@@ -63,6 +64,7 @@ module.exports = class Server{
             HandleItem(socket)
             HandleMap(socket)
             HandlePlayer(socket)
+            HandleCharacter(socket)
 
             socket.on('disconnect', () => {
                 console.log(`-${socket.id}`)

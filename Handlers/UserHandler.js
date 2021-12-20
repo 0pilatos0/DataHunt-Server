@@ -41,6 +41,7 @@ module.exports = function HandleUser(socket){
         else{
             errors.push("Your username or password is incorrect")
         }
+        global.sockets[socket.id].username = user.username
         socket.emit('login', {
             errors,
             success,
