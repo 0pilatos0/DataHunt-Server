@@ -10,6 +10,7 @@ const Vector2 = require("../Core/Vector2")
 module.exports = function HandlePlayer(socket){
     socket.on('movement', async (data) => {
         let s = global.sockets[socket.id]
+        if(!s.player) return
         if(data.forward){
             s.player.position.y -= 10
         }

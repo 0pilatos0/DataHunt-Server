@@ -9,7 +9,7 @@ module.exports = class Stats extends Seeder{
 
     /**
      * @param {Object} data to seed table Stats
-	 * @param {number} data.user_id User_Id
+	 * @param {number} data.character_id Character_Id
 	 * @param {number} data.money Money
 	 * @param {number} data.exp Exp
 	 * @param {number} data.level Level
@@ -19,13 +19,13 @@ module.exports = class Stats extends Seeder{
 	 * @param {number} data.defense Defense
      */
     static async Seed(data){
-        if(typeof data.user_id != "undefined"){
-			if(typeof data.user_id !== "number"){
-				throw new Error('user_id must be typeof number');
+        if(typeof data.character_id != "undefined"){
+			if(typeof data.character_id !== "number"){
+				throw new Error('character_id must be typeof number');
 			}
 		}
 		else {
-			data.user_id = Math.round(Math.random() * 255);
+			data.character_id = Math.round(Math.random() * 255);
 		}
 		if(typeof data.money != "undefined"){
 			if(typeof data.money !== "number"){

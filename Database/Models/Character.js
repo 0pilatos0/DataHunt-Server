@@ -77,9 +77,9 @@ module.exports = class Character extends Model {
  * @property {string} name
  * @property {number} user_id
  * @property {number} class_id
- * @property {number} stats_id
+ * @property {} sprite
  * @property {number} kills
- * @property {string} deaths
+ * @property {number} deaths
  * @property {number} level
  * @property {Date} created_at
  * @property {Date} updated_at
