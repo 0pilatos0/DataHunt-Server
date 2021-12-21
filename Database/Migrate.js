@@ -1,3 +1,4 @@
+require('dotenv').config({path: '../.env'});
 const Pi_Temps = require("./Migrations/Pi_Temps");
 const Achievements = require("./Migrations/Achievements");
 const Characters_Achievements = require("./Migrations/Characters_Achievements");
@@ -44,5 +45,6 @@ async function run(){
     await Users_Feed.Migrate();
     await Users_Roles.Migrate();
     await Users.Migrate();
+    await Stats.Migrate();
     process.exit();
 }

@@ -75,12 +75,11 @@ module.exports = class Item extends Model {
  * @typedef {Object} ItemObject
  * @property {number} id
  * @property {string} name
- * @property {number} required_level
- * @property {string} type
+ * @property {number} items_stats_id
+ * @property {number} type
  * @property {number} rarity
- * @property {number} min_value
- * @property {number} max_value
- * @property {string} texture
+ * @property {number} stats_range
+ * @property {number} texture
  * @property {Date} created_at
  * @property {Date} updated_at
  */

@@ -3,18 +3,26 @@ const io = require('socket.io')
 const MySQL = require('./MySQL')
 const HandleUser = require('../Handlers/UserHandler')
 const HandleItem = require('../Handlers/ItemHandler')
+const HandleMap = require('../Handlers/MapHandler')
+const HandlePlayer = require('../Handlers/PlayerHandler')
+const Vector2 = require('../Core/Vector2')
+const Player = require('../Elements/Player')
+const HandleCharacter = require('../Handlers/CharacterHandler')
+
+global.sockets = {}
 
 module.exports = class Server{
     #http = http.createServer()
     #io = io().attach(this.#http, {
-        pingInterval: 10000,
-        pingTimeout: 5000,
+        pingInterval: 60000,
+        pingTimeout: 60000,
         cookie: false,
         cors: {
             origin: '*'
         }
     })
     #mysql = new MySQL()
+    map = []
 
     /**
      * Fetches the server instance
@@ -27,7 +35,7 @@ module.exports = class Server{
 
         this.#io.on('connection', (socket) => {
             console.log(`+${socket.id}`)
-            
+            global.sockets[socket.id] = {socket}
             socket.use((packet, next) => {
                 let data = packet[1]
                 let replaceData = function(data){
@@ -54,9 +62,14 @@ module.exports = class Server{
 
             HandleUser(socket)
             HandleItem(socket)
+            HandleMap(socket)
+            HandlePlayer(socket)
+            HandleCharacter(socket)
 
             socket.on('disconnect', () => {
                 console.log(`-${socket.id}`)
+                delete Player.players[Player.players.indexOf(global.sockets[socket.id].player)]
+                delete global.sockets[socket.id]
             })
         })
     }
